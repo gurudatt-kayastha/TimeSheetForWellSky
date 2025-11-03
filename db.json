@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "id": "9c95",
+      "login": "rohit.sali",
+      "password": "rohitsali",
+      "firstName": "Rohit",
+      "lastName": "Sali",
+      "email": "rohitsali@gmail.com",
+      "language": "en",
+      "employeeId": "ASDFSDAF",
+      "dateOfJoining": "2025-11-18"
+    },
+    {
+      "id": "63e5",
+      "login": "harish.devhare",
+      "password": "harishdevhare",
+      "firstName": "harish",
+      "lastName": "devheare",
+      "email": "dharish@gmail.com",
+      "language": "en",
+      "employeeId": "WERWE",
+      "dateOfJoining": "2025-10-28"
+    }
+  ]
+}
