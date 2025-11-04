@@ -13,7 +13,6 @@ export class RegisterService {
 
   // Add new user
   public registerUser(user: any): Observable<any> {
-    debugger
     return this.http.post<any>(this.apiUrl, user);
   }
 }

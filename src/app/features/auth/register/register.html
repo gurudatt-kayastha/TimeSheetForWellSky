@@ -19,7 +19,7 @@
         [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
       <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
         <div *ngIf="f['password'].errors['required']">Password is required.</div>
-        <div *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters.</div>
+        <div *ngIf="f['password'].errors['minlength']">Password must be at least 8 characters.</div>
       </div>
     </div>
 
@@ -31,6 +31,18 @@
       <div *ngIf="submitted && f['confirmation'].errors" class="invalid-feedback">
         <div *ngIf="f['confirmation'].errors['required']">Confirmation is required.</div>
         <div *ngIf="f['confirmation'].errors['mismatch']">Passwords do not match.</div>
+      </div>
+    </div>
+
+    <!-- Role Dropdown -->
+    <div class="form-group mb-3">
+      <label for="role" class="form-label">Role</label>
+      <select [(ngModel)]="selectedValue" id="role" formControlName="role" class="form-select"
+        [ngClass]="{ 'is-invalid': submitted && f['role'].errors }">
+        <option *ngFor="let r of roles" [value]="r.role">{{ r.role }}</option>
+      </select>
+      <div *ngIf="submitted && f['role'].errors" class="invalid-feedback">
+        Role is required
       </div>
     </div>
 
@@ -68,7 +80,7 @@
     <!-- Language Dropdown -->
     <div class="form-group mb-3">
       <label for="language">Language</label>
-      <select id="language" formControlName="language" class="form-control"
+      <select [(ngModel)]="selectedLangValue" id="language" formControlName="language" class="form-control"
         [ngClass]="{ 'is-invalid': submitted && f['language'].errors }">
         <option *ngFor="let lang of languages" [value]="lang.code">{{ lang.name }}</option>
       </select>

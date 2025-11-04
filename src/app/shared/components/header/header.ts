@@ -25,8 +25,6 @@ export class Header {
   }
 
   private updateButtonVisibility(url: string): void {
-    debugger
-    // Show buttons if URL includes "login" or "register"
     this.showAuthButtons =
       url.includes('login');
 

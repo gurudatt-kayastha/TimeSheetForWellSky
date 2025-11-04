@@ -17,6 +17,8 @@ export class Register {
   submitted = false;
   maxDate = new Date().toISOString().split('T')[0];
   minDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  selectedValue = 'Employee';
+  selectedLangValue = 'en';
 
   languages = [
     { code: 'en', name: 'English' },
@@ -24,6 +26,11 @@ export class Register {
     { code: 'es', name: 'Spanish' },
     { code: 'de', name: 'German' },
     { code: 'hi', name: 'Hindi' },
+  ];
+
+  roles = [
+    { role: 'Employee' },
+    { role: 'Admin' }
   ];
 
   constructor(
@@ -35,8 +42,9 @@ export class Register {
   ngOnInit(): void {
     this.registerForm = this.fb.group({
       login: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       confirmation: ['', Validators.required],
+      role: ['employee', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -66,7 +74,6 @@ export class Register {
   }
 
   public onSubmit(): void {
-    debugger
     this.submitted = true;
 
     if (this.registerForm.invalid) {
@@ -76,6 +83,7 @@ export class Register {
     const newUser = {
       login: this.registerForm.value.login,
       password: this.registerForm.value.password,
+      role: this.registerForm.value.role,
       firstName: this.registerForm.value.firstName,
       lastName: this.registerForm.value.lastName,
       middleName: this.registerForm.value.middleName,

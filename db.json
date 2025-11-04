@@ -1,26 +1,16 @@
 {
   "users": [
     {
-      "id": "9c95",
+      "id": "6ed8",
       "login": "rohit.sali",
       "password": "rohitsali",
+      "role": "Employee",
       "firstName": "Rohit",
       "lastName": "Sali",
-      "email": "rohitsali@gmail.com",
+      "email": "rohit.sali@nitorinfotech.com",
       "language": "en",
-      "employeeId": "ASDFSDAF",
-      "dateOfJoining": "2025-11-18"
-    },
-    {
-      "id": "63e5",
-      "login": "harish.devhare",
-      "password": "harishdevhare",
-      "firstName": "harish",
-      "lastName": "devheare",
-      "email": "dharish@gmail.com",
-      "language": "en",
-      "employeeId": "WERWE",
-      "dateOfJoining": "2025-10-28"
+      "employeeId": "SDSDF",
+      "dateOfJoining": "2025-11-03"
     }
   ]
 }
