@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 export interface Timesheet {
   id: string;
@@ -70,7 +70,25 @@ export class TimesheetService {
   }
 
   createTimesheet(timesheet: Omit<Timesheet, 'id'>): Observable<Timesheet> {
-    return this.http.post<Timesheet>(this.apiUrl, timesheet);
+    return this.http.get<Timesheet[]>(this.apiUrl).pipe(
+      switchMap(timesheets => {
+        // Find the highest numeric ID
+        const maxId = timesheets.reduce((max, ts) => {
+          const numId = parseInt(ts.id);
+          return !isNaN(numId) && numId > max ? numId : max;
+        }, 0);
+        
+        // Generate next sequential ID
+        const newId = String(maxId + 1);
+        
+        const newTimesheet: Timesheet = {
+          ...timesheet,
+          id: newId
+        };
+        
+        return this.http.post<Timesheet>(this.apiUrl, newTimesheet);
+      })
+    );
   }
 
   updateTimesheet(id: string, timesheet: Partial<Timesheet>): Observable<Timesheet> {

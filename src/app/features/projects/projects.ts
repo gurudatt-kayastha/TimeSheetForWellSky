@@ -20,7 +20,7 @@ export interface ProjectWithHours extends Project {
 export class Projects implements OnInit {
   projects: ProjectWithHours[] = [];
   loading: boolean = true;
-  currentUser: string = 'nehal.patel@nitorinfotech.com'; // This should come from auth service
+  currentUser: string = JSON.parse(localStorage.getItem('currentUser') || '{}')?.email || '';
 
   constructor(
     private projectService: ProjectService,

@@ -22,7 +22,7 @@ export class ProjectTimesheet implements OnInit {
   loading: boolean = true;
   projectName: string = '';
   project: Project | null = null;
-  currentUser: string = 'nehal.patel@nitorinfotech.com'; // This should come from auth service
+  currentUser: string = JSON.parse(localStorage.getItem('currentUser') || '{}')?.email || '';
   isEmployee: boolean = false;
   
   // Filter properties
@@ -197,8 +197,7 @@ export class ProjectTimesheet implements OnInit {
   }
 
   onLogTime(): void {
-    // Implementation for logging new time entry
-    console.log('Log time for project:', this.projectName);
+  this.router.navigate(['/project', encodeURIComponent(this.projectName), 'log-time']);
   }
 
   onEditTimesheet(timesheet: Timesheet): void {
