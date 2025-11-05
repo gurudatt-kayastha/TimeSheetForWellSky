@@ -1,0 +1,207 @@
+{
+  "users": [
+    {
+      "id": "6ed8",
+      "login": "rohit.sali",
+      "password": "rohitsali",
+      "role": "Employee",
+      "firstName": "Rohit",
+      "lastName": "Sali",
+      "email": "rohit.sali@nitorinfotech.com",
+      "language": "en",
+      "employeeId": "SDSDF",
+      "dateOfJoining": "2025-11-03"
+    },
+    {
+      "id": "b377",
+      "login": "NehalPatel",
+      "password": "nehal123",
+      "role": "Employee",
+      "firstName": "Nehal",
+      "lastName": "Patel",
+      "email": "nehal.patel@nitorinfotech.com",
+      "language": "en",
+      "employeeId": "NEHAL",
+      "dateOfJoining": "2025-11-03"
+    },
+    {
+      "id": "4f29",
+      "login": "Omkar.Kulkarni",
+      "password": "omkar123",
+      "role": "Admin",
+      "firstName": "Omkar",
+      "lastName": "Kulkarni",
+      "email": "omkar.kulkarni@nitorinfotech.com",
+      "language": "en",
+      "employeeId": "OMKAR123",
+      "dateOfJoining": "2025-11-03"
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-1",
+      "name": "NIT Talent Pool",
+      "code": "NIT-TP",
+      "description": "Talent pool management and recruitment system for NIT",
+      "status": "Active",
+      "assignedUsers": [
+        "nehal.patel@nitorinfotech.com",
+        "rohit.sali@nitorinfotech.com"
+      ],
+      "startDate": "01-01-2025",
+      "endDate": "31-12-2025",
+      "projectManager": "omkar.kulkarni@nitorinfotech.com"
+    },
+    {
+      "id": "proj-2",
+      "name": "WellSky Offshore Blood Centers AI",
+      "code": "WELLSKY-OBCAI",
+      "description": "AI-powered blood center management system for WellSky offshore operations",
+      "status": "Active",
+      "assignedUsers": [
+        "nehal.patel@nitorinfotech.com",
+        "rohit.sali@nitorinfotech.com"
+      ],
+      "startDate": "01-10-2025",
+      "endDate": "30-09-2026 ",
+      "projectManager": "omkar.kulkarni@nitorinfotech.com"
+    }
+  ],
+  "timesheets": [
+    {
+      "id": "1",
+      "date": "03/11/2025",
+      "user": "nehal.patel@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "Project understanding, AAVA session and angular demo",
+      "comment": "session meeting for project understanding and working on angular 20 demo",
+      "hours": 9,
+      "approvalStatus": "Pending",
+      "created": "04/11/2025 12:47 PM",
+      "unit": "Unit 2",
+      "author": "nehal.patel@nitorinfotech.com",
+      "projectId": "proj-2",
+      "projectName": "WellSky Offshore Blood Centers AI"
+    },
+    {
+      "id": "2",
+      "date": "31/10/2025",
+      "user": "nehal.patel@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "session meeting for project understanding and working on angular 20 demo",
+      "comment": "",
+      "hours": 9,
+      "approvalStatus": "Approved",
+      "created": "31/10/2025 07:50 PM",
+      "unit": "Unit 2",
+      "author": "nehal.patel@nitorinfotech.com",
+      "projectId": "proj-2",
+      "projectName": "WellSky Offshore Blood Centers AI"
+    },
+    {
+      "id": "3",
+      "date": "30/10/2025",
+      "user": "nehal.patel@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "session meeting for project understanding and working on angular 20 demo",
+      "comment": "",
+      "hours": 9,
+      "approvalStatus": "Approved",
+      "created": "31/10/2025 10:34 AM",
+      "unit": "Unit 2",
+      "author": "nehal.patel@nitorinfotech.com",
+      "projectId": "proj-2",
+      "projectName": "WellSky Offshore Blood Centers AI"
+    },
+    {
+      "id": "4",
+      "date": "29/10/2025",
+      "user": "nehal.patel@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "walkthrough session with team for project understanding and learning angular",
+      "comment": "",
+      "hours": 9,
+      "approvalStatus": "Approved",
+      "created": "30/10/2025 10:55 AM",
+      "unit": "Unit 2",
+      "author": "nehal.patel@nitorinfotech.com",
+      "projectId": "proj-2",
+      "projectName": "WellSky Offshore Blood Centers AI"
+    },
+    {
+      "id": "5",
+      "date": "28/10/2025",
+      "user": "nehal.patel@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "Recording go through and meetings",
+      "comment": "",
+      "hours": 9,
+      "approvalStatus": "Approved",
+      "created": "29/10/2025 11:28 AM",
+      "unit": "Unit 2",
+      "author": "nehal.patel@nitorinfotech.com",
+      "projectId": "proj-1",
+      "projectName": "NIT Talent Pool"
+    },
+    {
+      "id": "6",
+      "date": "27/10/2025",
+      "user": "nehal.patel@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "Recording go through and discussion",
+      "comment": "",
+      "hours": 9,
+      "approvalStatus": "Approved",
+      "created": "28/10/2025 10:34 AM",
+      "unit": "Unit 2",
+      "author": "nehal.patel@nitorinfotech.com",
+      "projectId": "proj-1",
+      "projectName": "NIT Talent Pool"
+    },
+    {
+      "id": "7",
+      "date": "24/10/2025",
+      "user": "nehal.patel@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "Project understanding and discussion",
+      "comment": "",
+      "hours": 9,
+      "approvalStatus": "Approved",
+      "created": "27/10/2025 11:56 AM",
+      "unit": "Unit 2",
+      "author": "nehal.patel@nitorinfotech.com",
+      "projectId": "proj-1",
+      "projectName": "NIT Talent Pool"
+    },
+    {
+      "id": "8",
+      "date": "23/10/2025",
+      "user": "nehal.patel@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "Project understanding and discussion",
+      "comment": "",
+      "hours": 9,
+      "approvalStatus": "Approved",
+      "created": "24/10/2025 12:40 PM",
+      "unit": "Unit 2",
+      "author": "nehal.patel@nitorinfotech.com",
+      "projectId": "proj-1",
+      "projectName": "NIT Talent Pool"
+    },
+    {
+      "id": "9",
+      "date": "22/10/2025",
+      "user": "nehal.patel@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "Project understanding and discussion",
+      "comment": "",
+      "hours": 9,
+      "approvalStatus": "Approved",
+      "created": "24/10/2025 12:40 PM",
+      "unit": "Unit 2",
+      "author": "nehal.patel@nitorinfotech.com",
+      "projectId": "proj-2",
+      "projectName": "WellSky Offshore Blood Centers AI"
+    }
+  ]
+}

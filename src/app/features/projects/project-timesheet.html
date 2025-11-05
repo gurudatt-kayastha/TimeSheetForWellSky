@@ -1,0 +1,177 @@
+<div class="project-timesheet-container">
+  <!-- Breadcrumb and Back Navigation -->
+  <div class="breadcrumb-section">
+    <button class="btn-back" (click)="goBackToProjects()">
+      ← Back to Projects
+    </button>
+    <div class="breadcrumb">
+      <a href="/projects">Projects</a> 
+      <span class="separator">/</span> 
+      <span class="current">{{ projectName }}</span>
+    </div>
+  </div>
+
+  <!-- Project Header -->
+  <div class="project-header">
+    <div class="project-info">
+      <h1 class="project-title">{{ projectName }}</h1>
+      @if (project) {
+        <div class="project-details">
+          <span class="project-code">{{ project.code }}</span>
+          <span [class]="getStatusClass(project.status)" class="project-status">
+            {{ project.status }}
+          </span>
+        </div>
+        <p class="project-description">{{ project.description }}</p>
+      }
+    </div>
+    <button class="btn-log-time" (click)="onLogTime()">
+      <i class="icon-clock"></i> Log time
+    </button>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <h3 class="filters-title">Filters</h3>
+    <div class="filter-row">
+      <div class="filter-item">
+        <label for="date-filter">Date</label>
+        <select class="filter-select" [(ngModel)]="selectedDate" (change)="onFilterChange()">
+          <option value="any">any</option>
+          <option value="today">Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="this-week">This Week</option>
+          <option value="last-week">Last Week</option>
+          <option value="this-month">This Month</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label for="status-filter">Status</label>
+        <select class="filter-select" [(ngModel)]="selectedStatus" (change)="onFilterChange()">
+          <option value="any">Any</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label for="activity-filter">Activity</label>
+        <select class="filter-select" [(ngModel)]="selectedActivity" (change)="onFilterChange()">
+          <option value="any">Any</option>
+          <option value="Task">Task</option>
+          <option value="Leave">Leave</option>
+          <option value="Holiday">Holiday</option>
+        </select>
+      </div>
+      @if (!isEmployee) {
+        <div class="filter-item">
+          <label for="user-filter">User</label>
+          <select class="filter-select" [(ngModel)]="selectedUser" (change)="onFilterChange()">
+            <option value="all">All</option>
+            <option value="nehal.patel@nitorinfotech.com">Nehal Patel</option>
+            <option value="rohit.sali@nitorinfotech.com">Rohit Sali</option>
+          </select>
+        </div>
+      }
+    </div>
+
+    <!-- Filter Actions -->
+    <div class="filter-actions">
+      <button class="btn-apply" (click)="onApplyFilter()">
+        <i class="icon-check"></i> Apply
+      </button>
+      <button class="btn-clear" (click)="onClearFilter()">
+        <i class="icon-refresh"></i> Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Total Hours Display -->
+  <div class="hours-summary">
+    <!-- <div class="hours-card">
+      <span class="hours-label">Your Hours on {{ projectName }}:</span>
+      <span class="hours-value">{{ totalHours.toFixed(2) }}h</span>
+    </div> -->
+    <div class="hours-card total-project-hours">
+      <span class="hours-label">Total Project Hours (All Team):</span>
+      <span class="hours-value">{{ projectTotalHours.toFixed(2) }}h</span>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  @if (!loading) {
+    <div class="table-container">
+      <table class="timesheet-table">
+        <thead>
+          <tr>
+            <th class="checkbox-column">
+              <input type="checkbox">
+            </th>
+            <th class="sortable">
+              DATE
+              <i class="sort-icon">▼</i>
+            </th>
+            @if (!isEmployee) {
+              <th>USER</th>
+            }
+            <th>ACTIVITY</th>
+            <th>ISSUE</th>
+            <th>HOURS</th>
+            <th>APPROVAL STATUS</th>
+            <th>CREATED</th>
+            <th>UNIT</th>
+            <th>AUTHOR</th>
+            <th class="actions-column"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (timesheet of filteredTimesheets; track timesheet.id) {
+            <tr class="table-row">
+              <td class="checkbox-column">
+                <input type="checkbox">
+              </td>
+              <td class="date-column">{{ timesheet.date }}</td>
+              @if (!isEmployee) {
+                <td class="user-column">{{ timesheet.user }}</td>
+              }
+              <td class="activity-column">{{ timesheet.activity }}</td>
+              <td class="issue-column">{{ timesheet.issue }}</td>
+              <td class="hours-column">{{ timesheet.hours.toFixed(2) }}</td>
+              <td class="status-column">
+                <span [class]="getStatusClass(timesheet.approvalStatus)">
+                  {{ timesheet.approvalStatus }}
+                </span>
+              </td>
+              <td class="created-column">{{ timesheet.created }}</td>
+              <td class="unit-column">{{ timesheet.unit }}</td>
+              <td class="author-column">{{ timesheet.author }}</td>
+              <td class="actions-column">
+                <button class="btn-edit" title="Edit timesheet entry" (click)="onEditTimesheet(timesheet)">✏️</button>
+                <button class="btn-delete" title="Delete timesheet entry" (click)="onDeleteTimesheet(timesheet)">🗑️</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-container">
+      <p>Loading project timesheet...</p>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!loading && filteredTimesheets.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">📊</div>
+      <h3>No Timesheet Entries</h3>
+      <p>No timesheet entries found for {{ projectName }} with the selected filters.</p>
+      <button class="btn-log-time" (click)="onLogTime()">
+        <i class="icon-clock"></i> Log your first entry
+      </button>
+    </div>
+  }
+</div>

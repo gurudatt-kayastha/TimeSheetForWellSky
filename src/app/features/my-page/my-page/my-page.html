@@ -1,0 +1,146 @@
+<div class="timesheet-container">
+  <!-- Header Section -->
+  <!-- <div class="header-section">
+    <nav class="nav-tabs">
+      <a href="#" class="nav-link active">Logged time</a>
+    </nav>
+  </div> -->
+
+  <!-- Page Title -->
+  <div class="page-header">
+    <h1 class="page-title">Spent time</h1>
+    <button class="btn-log-time" (click)="onLogTime()">
+      <i class="icon-clock"></i> Log time
+    </button>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <h3 class="filters-title">Filters</h3>
+    <div class="filter-row">
+      <div class="filter-item">
+        <label for="date-filter">Date</label>
+        <select class="filter-select" [(ngModel)]="selectedDate" (change)="onFilterChange()">
+          <option value="any">any</option>
+          <option value="today">Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="this-week">This Week</option>
+          <option value="last-week">Last Week</option>
+          <option value="this-month">This Month</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label for="status-filter">Status</label>
+        <select class="filter-select" [(ngModel)]="selectedStatus" (change)="onFilterChange()">
+          <option value="any">Any</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label for="activity-filter">Activity</label>
+        <select class="filter-select" [(ngModel)]="selectedActivity" (change)="onFilterChange()">
+          <option value="any">Any</option>
+          <option value="Task">Task</option>
+          <option value="Leave">Leave</option>
+          <option value="Holiday">Holiday</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label for="user-filter">User</label>
+        <select class="filter-select" [(ngModel)]="selectedUser" (change)="onFilterChange()">
+          <option value="all">All</option>
+          <option value="Pending">Nehal Patel</option>
+          <option value="Approved">Rohit Sali</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Filter Actions -->
+    <div class="filter-actions">
+      <button class="btn-apply" (click)="onApplyFilter()">
+        <i class="icon-check"></i> Apply
+      </button>
+      <button class="btn-clear" (click)="onClearFilter()">
+        <i class="icon-refresh"></i> Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Total Hours Display -->
+  <div class="total-hours">
+    <span class="hours-label">Hours:</span>
+    <span class="hours-value">{{ totalHours.toFixed(2) }}</span>
+  </div>
+
+  <!-- Data Table -->
+  @if (!loading) {
+    <div class="table-container">
+      <table class="timesheet-table">
+        <thead>
+          <tr>
+            <th class="checkbox-column">
+              <input type="checkbox">
+            </th>
+            <th class="sortable">
+              DATE
+              <i class="sort-icon">▼</i>
+            </th>
+            <th>USER</th>
+            <th>ACTIVITY</th>
+            <th>ISSUE</th>
+            <th>COMMENT</th>
+            <th>HOURS</th>
+            <th>APPROVAL STATUS</th>
+            <th>CREATED</th>
+            <th>UNIT</th>
+            <th>AUTHOR</th>
+            <th class="actions-column"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (timesheet of timesheets; track timesheet.id) {
+            <tr class="table-row">
+              <td class="checkbox-column">
+                <input type="checkbox">
+              </td>
+              <td class="date-column">{{ timesheet.date }}</td>
+              <td class="user-column">{{ timesheet.user }}</td>
+              <td class="activity-column">{{ timesheet.activity }}</td>
+              <td class="issue-column">{{ timesheet.issue }}</td>
+              <td class="comment-column">{{ timesheet.comment }}</td>
+              <td class="hours-column">{{ timesheet.hours.toFixed(2) }}</td>
+              <td class="status-column">
+                <span [class]="getStatusClass(timesheet.approvalStatus)">
+                  {{ timesheet.approvalStatus }}
+                </span>
+              </td>
+              <td class="created-column">{{ timesheet.created }}</td>
+              <td class="unit-column">{{ timesheet.unit }}</td>
+              <td class="author-column">{{ timesheet.author }}</td>
+              <td class="actions-column">
+                <button class="btn-edit">✏️</button>
+                <button class="btn-more">⋯</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-container">
+      <p>Loading timesheets...</p>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!loading && timesheets.length === 0) {
+    <div class="empty-state">
+      <p>No timesheet entries found.</p>
+    </div>
+  }
+</div>

@@ -1,0 +1,35 @@
+<div class="login-container">
+	<div class="login-card">
+		<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+			<!-- Username Field -->
+			<div class="form-group mb-3">
+				<label for="username">Username</label>
+				<input type="text" id="username" formControlName="username" class="form-control"
+					placeholder="Enter your username" [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" />
+				<div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+					<div *ngIf="f['username'].errors['required']">Username is required.</div>
+				</div>
+			</div>
+
+			<!-- Password Field -->
+			<div class="form-group mb-4">
+				<label for="password">Password</label>
+				<input type="password" id="password" formControlName="password" class="form-control"
+					placeholder="Enter your password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+				<div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+					<div *ngIf="f['password'].errors['required']">Password is required.</div>
+					<div *ngIf="f['password'].errors['minlength']">
+						Password must be at least 8 characters long.
+					</div>
+				</div>
+			</div>
+
+			<p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+			<!-- Submit Button -->
+			<button type="submit" class="btn btn-primary w-100">Login</button>
+		</form>
+
+		<p class="text-center mt-2 mb-0">Lost Password?</p>
+	</div>
+</div>
