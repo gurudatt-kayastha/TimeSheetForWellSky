@@ -36,7 +36,7 @@
     <div class="filter-row">
       <div class="filter-item">
         <label for="date-filter">Date</label>
-        <select class="filter-select" [(ngModel)]="selectedDate" (change)="onFilterChange()">
+        <select class="filter-select" [(ngModel)]="selectedDate">
           <option value="any">any</option>
           <option value="today">Today</option>
           <option value="yesterday">Yesterday</option>
@@ -47,7 +47,7 @@
       </div>
       <div class="filter-item">
         <label for="status-filter">Status</label>
-        <select class="filter-select" [(ngModel)]="selectedStatus" (change)="onFilterChange()">
+        <select class="filter-select" [(ngModel)]="selectedStatus">
           <option value="any">Any</option>
           <option value="Pending">Pending</option>
           <option value="Approved">Approved</option>
@@ -56,17 +56,29 @@
       </div>
       <div class="filter-item">
         <label for="activity-filter">Activity</label>
-        <select class="filter-select" [(ngModel)]="selectedActivity" (change)="onFilterChange()">
+        <select class="filter-select" [(ngModel)]="selectedActivity">
           <option value="any">Any</option>
           <option value="Task">Task</option>
           <option value="Leave">Leave</option>
           <option value="Holiday">Holiday</option>
         </select>
       </div>
+
+      <div class="filter-item">
+  <label for="unit-filter">Unit</label>
+  <select class="filter-select" [(ngModel)]="selectedUnit">
+    <option value="any">Any</option>
+    <option value="Unit 1">Unit 1</option>
+    <option value="Unit 2">Unit 2</option>
+    <option value="Unit 3">Unit 3</option>
+  </select>
+</div>
+
+
       @if (!isEmployee) {
         <div class="filter-item">
           <label for="user-filter">User</label>
-          <select class="filter-select" [(ngModel)]="selectedUser" (change)="onFilterChange()">
+          <select class="filter-select" [(ngModel)]="selectedUser">
             <option value="all">All</option>
             <option value="nehal.patel@nitorinfotech.com">Nehal Patel</option>
             <option value="rohit.sali@nitorinfotech.com">Rohit Sali</option>
@@ -98,6 +110,18 @@
     </div>
   </div>
 
+  <!-- Bulk Actions Bar -->
+  @if (getSelectedCount() > 0) {
+    <div class="bulk-actions-bar">
+      <div class="selected-info">
+        <span class="selected-count">{{ getSelectedCount() }} item(s) selected</span>
+      </div>
+      <button class="btn-bulk-delete" (click)="onBulkDelete()">
+        🗑️ Delete Selected Entries
+      </button>
+    </div>
+  }
+
   <!-- Data Table -->
   @if (!loading) {
     <div class="table-container">
@@ -105,7 +129,11 @@
         <thead>
           <tr>
             <th class="checkbox-column">
-              <input type="checkbox">
+              <input 
+                type="checkbox" 
+                [checked]="selectAll" 
+                (change)="toggleSelectAll($event)"
+              >
             </th>
             <th class="sortable">
               DATE
@@ -128,7 +156,11 @@
           @for (timesheet of filteredTimesheets; track timesheet.id) {
             <tr class="table-row">
               <td class="checkbox-column">
-                <input type="checkbox">
+                <input 
+                  type="checkbox" 
+                  [checked]="isTimesheetSelected(timesheet.id)"
+                  (change)="toggleSelectTimesheet(timesheet.id, $event)"
+                >
               </td>
               <td class="date-column">{{ timesheet.date }}</td>
               @if (!isEmployee) {
