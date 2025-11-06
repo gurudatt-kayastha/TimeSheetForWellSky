@@ -1,3 +1,46 @@
 .register-form {
-  height: 125vh;
+  height: 160vh;
+}
+
+.btn-apply {
+  padding: 6px 12px;
+  border: none;
+  background-color: #3498db !important;
+  border-radius: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.register-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-title {
+  font-size: 28px;
+  color: #333;
+  margin: 0 0 5px 0;
+  font-weight: 600;
+}
+
+.seperator {
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.horizontal-rule {
+  border: none;
+  border-top: 1.5px solid #424242;
+  margin: 10px 0 20px 0;
+}
+
+.form-container {
+  border: 1px solid rgb(222, 222, 222);
+  padding: 25px;
+  border-radius: 5px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
 }

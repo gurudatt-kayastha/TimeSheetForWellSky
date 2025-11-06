@@ -35,6 +35,18 @@
       "language": "en",
       "employeeId": "OMKAR123",
       "dateOfJoining": "2025-11-03"
+    },
+    {
+      "id": "7a93",
+      "login": "ravindra.shahane",
+      "password": "ravindrashahane",
+      "role": "Employee",
+      "firstName": "Ravindra",
+      "lastName": "Shahane",
+      "email": "ravindra.shahane@nitorinfotech.com",
+      "language": "en",
+      "employeeId": "NITP2344",
+      "dateOfJoining": "2025-11-05"
     }
   ],
   "projects": [
