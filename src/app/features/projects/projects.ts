@@ -21,7 +21,8 @@ export class Projects implements OnInit {
   today = new Date().toISOString().split('T')[0];
   projects: ProjectWithHours[] = [];
   loading: boolean = true;
-  currentUser: string = 'nehal.patel@nitorinfotech.com'; // This should come from auth service
+  //currentUser: string = 'nehal.patel@nitorinfotech.com'; // This should come from auth service
+  currentUser: string = JSON.parse(localStorage.getItem('currentUser') || '{}')?.email || '';
   showAddProjectDialog = false;
   projectForm: FormGroup;
   availableUsers: any[] = []; // Will store users from your system
