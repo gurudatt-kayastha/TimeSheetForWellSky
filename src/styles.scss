@@ -1,9 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 //@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@use 'ngx-toastr/toastr' as *;
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-size: 14px;
+  font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }

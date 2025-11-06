@@ -1,116 +1,126 @@
-<div class="register-form">
-  <h5>Register</h5>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <!-- Username -->
-    <div class="form-group mb-3">
-      <label for="login">Username</label>
-      <input type="text" id="login" formControlName="login" class="form-control" placeholder="Enter your username"
-        [ngClass]="{ 'is-invalid': submitted && f['login'].errors }" />
-      <div *ngIf="submitted && f['login'].errors" class="invalid-feedback">
-        <div *ngIf="f['login'].errors['required']">Username is required.</div>
-        <div *ngIf="f['login'].errors['minlength']">Username must be at least 3 characters.</div>
-      </div>
+<div class="register-container register-form">
+  <div class="breadcrumb-section">
+    <div class="breadcrumb">
+      <span class="separator">/</span>
+      <a class="seperator" href="/register">Register</a>
     </div>
-
-    <!-- Password -->
-    <div class="form-group mb-3">
-      <label for="password">Password</label>
-      <input type="password" id="password" formControlName="password" class="form-control" placeholder="Enter password"
-        [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
-      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-        <div *ngIf="f['password'].errors['required']">Password is required.</div>
-        <div *ngIf="f['password'].errors['minlength']">Password must be at least 8 characters.</div>
+  </div>
+  <h1 class="page-title">Register</h1>
+  <hr class="horizontal-rule">
+  <div class="form-container">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Username -->
+      <div class="form-group mb-3">
+        <label for="login">Username</label>
+        <input type="text" id="login" formControlName="login" class="form-control" placeholder="Enter your username"
+          [ngClass]="{ 'is-invalid': submitted && f['login'].errors }" />
+        <div *ngIf="submitted && f['login'].errors" class="invalid-feedback">
+          <div *ngIf="f['login'].errors['required']">Username is required.</div>
+          <div *ngIf="f['login'].errors['minlength']">Username must be at least 3 characters.</div>
+        </div>
       </div>
-    </div>
 
-    <!-- Confirmation -->
-    <div class="form-group mb-3">
-      <label for="confirmation">Confirm Password</label>
-      <input type="password" id="confirmation" formControlName="confirmation" class="form-control"
-        placeholder="Confirm password" [ngClass]="{ 'is-invalid': submitted && f['confirmation'].errors }" />
-      <div *ngIf="submitted && f['confirmation'].errors" class="invalid-feedback">
-        <div *ngIf="f['confirmation'].errors['required']">Confirmation is required.</div>
-        <div *ngIf="f['confirmation'].errors['mismatch']">Passwords do not match.</div>
+      <!-- Password -->
+      <div class="form-group mb-3">
+        <label for="password">Password</label>
+        <input type="password" id="password" formControlName="password" class="form-control"
+          placeholder="Enter password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <div *ngIf="f['password'].errors['required']">Password is required.</div>
+          <div *ngIf="f['password'].errors['minlength']">Password must be at least 8 characters.</div>
+        </div>
       </div>
-    </div>
 
-    <!-- Role Dropdown -->
-    <div class="form-group mb-3">
-      <label for="role" class="form-label">Role</label>
-      <select [(ngModel)]="selectedValue" id="role" formControlName="role" class="form-select"
-        [ngClass]="{ 'is-invalid': submitted && f['role'].errors }">
-        <option *ngFor="let r of roles" [value]="r.role">{{ r.role }}</option>
-      </select>
-      <div *ngIf="submitted && f['role'].errors" class="invalid-feedback">
-        Role is required
+      <!-- Confirmation -->
+      <div class="form-group mb-3">
+        <label for="confirmation">Confirm Password</label>
+        <input type="password" id="confirmation" formControlName="confirmation" class="form-control"
+          placeholder="Confirm password" [ngClass]="{ 'is-invalid': submitted && f['confirmation'].errors }" />
+        <div *ngIf="submitted && f['confirmation'].errors" class="invalid-feedback">
+          <div *ngIf="f['confirmation'].errors['required']">Confirmation is required.</div>
+          <div *ngIf="f['confirmation'].errors['mismatch']">Passwords do not match.</div>
+        </div>
       </div>
-    </div>
 
-    <!-- First Name -->
-    <div class="form-group mb-3">
-      <label for="confirmation">First Name</label>
-      <input type="firstName" id="firstName" formControlName="firstName" class="form-control" placeholder="First Name"
-        [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }" />
-      <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
-        <div *ngIf="f['firstName'].errors['firstName']">firstName is required.</div>
+      <!-- Role Dropdown -->
+      <div class="form-group mb-3">
+        <label for="role" class="form-label">Role</label>
+        <select [(ngModel)]="selectedValue" id="role" formControlName="role" class="form-select"
+          [ngClass]="{ 'is-invalid': submitted && f['role'].errors }">
+          <option *ngFor="let r of roles" [value]="r.role">{{ r.role }}</option>
+        </select>
+        <div *ngIf="submitted && f['role'].errors" class="invalid-feedback">
+          Role is required
+        </div>
       </div>
-    </div>
 
-    <!-- Last Name -->
-    <div class="form-group mb-3">
-      <label for="lastName">Last Name</label>
-      <input type="lastName" id="firstName" formControlName="lastName" class="form-control" placeholder="First Name"
-        [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }" />
-      <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
-        <div *ngIf="f['lastName'].errors['lastName']">lastName is required.</div>
+      <!-- First Name -->
+      <div class="form-group mb-3">
+        <label for="confirmation">First Name</label>
+        <input type="firstName" id="firstName" formControlName="firstName" class="form-control" placeholder="First Name"
+          [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }" />
+        <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+          <div *ngIf="f['firstName'].errors['firstName']">firstName is required.</div>
+        </div>
       </div>
-    </div>
 
-    <!-- Email -->
-    <div class="form-group mb-3">
-      <label for="email">Email</label>
-      <input type="email" id="email" formControlName="email" class="form-control" placeholder="Enter your email"
-        [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
-      <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-        <div *ngIf="f['email'].errors['required']">Email is required.</div>
-        <div *ngIf="f['email'].errors['email']">Enter a valid email.</div>
+      <!-- Last Name -->
+      <div class="form-group mb-3">
+        <label for="lastName">Last Name</label>
+        <input type="lastName" id="firstName" formControlName="lastName" class="form-control" placeholder="First Name"
+          [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }" />
+        <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
+          <div *ngIf="f['lastName'].errors['lastName']">lastName is required.</div>
+        </div>
       </div>
-    </div>
 
-    <!-- Language Dropdown -->
-    <div class="form-group mb-3">
-      <label for="language">Language</label>
-      <select [(ngModel)]="selectedLangValue" id="language" formControlName="language" class="form-control"
-        [ngClass]="{ 'is-invalid': submitted && f['language'].errors }">
-        <option *ngFor="let lang of languages" [value]="lang.code">{{ lang.name }}</option>
-      </select>
-      <div *ngIf="submitted && f['language'].errors" class="invalid-feedback">
-        Language is required.
+      <!-- Email -->
+      <div class="form-group mb-3">
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" class="form-control" placeholder="Enter your email"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">Email is required.</div>
+          <div *ngIf="f['email'].errors['email']">Enter a valid email.</div>
+        </div>
       </div>
-    </div>
 
-    <!-- Employee ID -->
-    <div class="form-group mb-3">
-      <label for="employeeId">Employee ID</label>
-      <input type="text" id="employeeId" formControlName="employeeId" class="form-control"
-        placeholder="Enter employee ID" [ngClass]="{ 'is-invalid': submitted && f['employeeId'].errors }" />
-      <div *ngIf="submitted && f['employeeId'].errors" class="invalid-feedback">
-        <div *ngIf="f['employeeId'].errors['required']">Employee ID is required.</div>
-        <div *ngIf="f['employeeId'].errors['pattern']">Employee ID must contain only uppercase letters or numbers.</div>
+      <!-- Language Dropdown -->
+      <div class="form-group mb-3">
+        <label for="language">Language</label>
+        <select [(ngModel)]="selectedLangValue" id="language" formControlName="language" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['language'].errors }">
+          <option *ngFor="let lang of languages" [value]="lang.code">{{ lang.name }}</option>
+        </select>
+        <div *ngIf="submitted && f['language'].errors" class="invalid-feedback">
+          Language is required.
+        </div>
       </div>
-    </div>
 
-    <!-- Date of Joining -->
-    <div class="form-group mb-3">
-      <label for="dateOfJoining">Date of Joining</label>
-      <input type="date" id="dateOfJoining" formControlName="dateOfJoining" class="form-control" [attr.max]="maxDate"
-        [attr.min]="minDate" [ngClass]="{ 'is-invalid': submitted && f['dateOfJoining'].errors }" />
-      <div *ngIf="submitted && f['dateOfJoining'].errors" class="invalid-feedback">
-        Date of Joining is required.
+      <!-- Employee ID -->
+      <div class="form-group mb-3">
+        <label for="employeeId">Employee ID</label>
+        <input type="text" id="employeeId" formControlName="employeeId" class="form-control"
+          placeholder="Enter employee ID" [ngClass]="{ 'is-invalid': submitted && f['employeeId'].errors }" />
+        <div *ngIf="submitted && f['employeeId'].errors" class="invalid-feedback">
+          <div *ngIf="f['employeeId'].errors['required']">Employee ID is required.</div>
+          <div *ngIf="f['employeeId'].errors['pattern']">Employee ID must contain only uppercase letters or numbers.
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Submit Button -->
-    <button type="submit" class="btn btn-primary">Register</button>
-  </form>
+      <!-- Date of Joining -->
+      <div class="form-group mb-3">
+        <label for="dateOfJoining">Date of Joining</label>
+        <input type="date" id="dateOfJoining" formControlName="dateOfJoining" class="form-control" [attr.max]="maxDate"
+          [attr.min]="minDate" [ngClass]="{ 'is-invalid': submitted && f['dateOfJoining'].errors }" />
+        <div *ngIf="submitted && f['dateOfJoining'].errors" class="invalid-feedback">
+          Date of Joining is required.
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="mt-5 btn btn-primary btn-apply">Submit</button>
+    </form>
+  </div>
 </div>

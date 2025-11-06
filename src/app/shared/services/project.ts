@@ -13,6 +13,7 @@ export interface Project {
   startDate: string;
   endDate: string;
   projectManager: string;
+  totalHours?: number;
 }
 
 @Injectable({
@@ -28,9 +29,11 @@ export class ProjectService {
   }
 
   getProjectsForUser(userEmail: string): Observable<Project[]> {
-    return this.http.get<Project[]>(this.apiUrl).pipe(
+    return this.http.get<Project[]>(`${this.apiUrl}`).pipe(
       map(projects => projects.filter(project => 
-        project.assignedUsers.includes(userEmail)
+        // Show project if user is either assigned OR is the project manager
+        project.assignedUsers.includes(userEmail) || 
+        project.projectManager === userEmail
       ))
     );
   }

@@ -1,4 +1,9 @@
 <div class="project-timesheet-container">
+  <!-- Custom Alert Component -->
+  <!-- Custom Alert Component -->
+<app-custom-alert [config]="alertConfig"></app-custom-alert>
+
+
   <!-- Breadcrumb and Back Navigation -->
   <div class="breadcrumb-section">
     <button class="btn-back" (click)="goBackToProjects()">
@@ -36,7 +41,7 @@
     <div class="filter-row">
       <div class="filter-item">
         <label for="date-filter">Date</label>
-        <select class="filter-select" [(ngModel)]="selectedDate" (change)="onFilterChange()">
+        <select class="filter-select" [(ngModel)]="selectedDate">
           <option value="any">any</option>
           <option value="today">Today</option>
           <option value="yesterday">Yesterday</option>
@@ -47,7 +52,7 @@
       </div>
       <div class="filter-item">
         <label for="status-filter">Status</label>
-        <select class="filter-select" [(ngModel)]="selectedStatus" (change)="onFilterChange()">
+        <select class="filter-select" [(ngModel)]="selectedStatus">
           <option value="any">Any</option>
           <option value="Pending">Pending</option>
           <option value="Approved">Approved</option>
@@ -56,17 +61,29 @@
       </div>
       <div class="filter-item">
         <label for="activity-filter">Activity</label>
-        <select class="filter-select" [(ngModel)]="selectedActivity" (change)="onFilterChange()">
+        <select class="filter-select" [(ngModel)]="selectedActivity">
           <option value="any">Any</option>
           <option value="Task">Task</option>
           <option value="Leave">Leave</option>
           <option value="Holiday">Holiday</option>
+          <option value="Interview">Interview</option>
         </select>
       </div>
+
+      <div class="filter-item">
+        <label for="unit-filter">Unit</label>
+        <select class="filter-select" [(ngModel)]="selectedUnit">
+          <option value="any">Any</option>
+          <option value="Unit 1">Unit 1</option>
+          <option value="Unit 2">Unit 2</option>
+          <option value="Unit 3">Unit 3</option>
+        </select>
+      </div>
+
       @if (!isEmployee) {
         <div class="filter-item">
           <label for="user-filter">User</label>
-          <select class="filter-select" [(ngModel)]="selectedUser" (change)="onFilterChange()">
+          <select class="filter-select" [(ngModel)]="selectedUser">
             <option value="all">All</option>
             <option value="nehal.patel@nitorinfotech.com">Nehal Patel</option>
             <option value="rohit.sali@nitorinfotech.com">Rohit Sali</option>
@@ -88,10 +105,6 @@
 
   <!-- Total Hours Display -->
   <div class="hours-summary">
-    <!-- <div class="hours-card">
-      <span class="hours-label">Your Hours on {{ projectName }}:</span>
-      <span class="hours-value">{{ totalHours.toFixed(2) }}h</span>
-    </div> -->
     <div class="hours-card total-project-hours">
       <span class="hours-label">Total Project Hours (All Team):</span>
       <span class="hours-value">{{ projectTotalHours.toFixed(2) }}h</span>
@@ -105,7 +118,7 @@
         <span class="selected-count">{{ getSelectedCount() }} item(s) selected</span>
       </div>
       <button class="btn-bulk-delete" (click)="onBulkDelete()">
-        🗑️ Delete Selected Entries
+         Delete Selected Entries
       </button>
     </div>
   }
