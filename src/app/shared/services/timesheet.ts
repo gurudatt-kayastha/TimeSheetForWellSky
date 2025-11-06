@@ -91,8 +91,8 @@ export class TimesheetService {
     );
   }
 
-  updateTimesheet(id: string, timesheet: Partial<Timesheet>): Observable<Timesheet> {
-    return this.http.put<Timesheet>(`${this.apiUrl}/${id}`, timesheet);
+  updateTimesheet(id: string, updatedData: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, updatedData);
   }
 
   deleteTimesheet(id: string): Observable<void> {

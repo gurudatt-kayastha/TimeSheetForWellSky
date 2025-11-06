@@ -14,4 +14,5 @@ export const routes: Routes = [
   { path: 'projects', component: Projects },
   { path: 'project/:name', component: ProjectTimesheet },
   { path: 'project/:name/log-time', component: LogTime },
+  { path: 'project/:name/log-time/:id', component: LogTime }
 ];

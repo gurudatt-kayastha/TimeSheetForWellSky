@@ -201,10 +201,15 @@ export class ProjectTimesheet implements OnInit {
   }
 
   onEditTimesheet(timesheet: Timesheet): void {
-    // Implementation for editing timesheet entry
-    console.log('Edit timesheet:', timesheet);
-    // TODO: Open edit modal or navigate to edit page
-  }
+  this.router.navigate([
+    '/project',
+    encodeURIComponent(this.projectName),
+    'log-time',
+    timesheet.id
+  ]);
+}
+
+
 
   onDeleteTimesheet(timesheet: Timesheet): void {
     // Implementation for deleting timesheet entry
