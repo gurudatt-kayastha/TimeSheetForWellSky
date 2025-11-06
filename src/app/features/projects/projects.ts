@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ProjectService, Project } from '../../shared/services/project';
-import { forkJoin } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { TimesheetService } from '../../shared/services/timesheet';
 import { forkJoin, Observable, of } from 'rxjs';
@@ -299,9 +298,7 @@ export class Projects implements OnInit {
       });
     }
   }
-}
 
-  isAdmin: boolean = false;
   selectedUsers: Record<string, Set<string>> = {};
   showUserListForProject: Record<string, boolean> = {};
 
@@ -512,3 +509,4 @@ export class Projects implements OnInit {
     this.selectedUsers[String(project.id)] = new Set<string>();
   }
 }
+
