@@ -13,6 +13,7 @@ export interface Project {
   startDate: string;
   endDate: string;
   projectManager: string;
+  totalHours?: number;
 }
 
 @Injectable({
