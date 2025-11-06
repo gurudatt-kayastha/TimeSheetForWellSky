@@ -1,10 +1,8 @@
 <div class="project-timesheet-container">
   <!-- Custom Alert Component -->
-  <app-custom-alert 
-    [config]="alertConfig"
-    (confirm)="customAlert.onConfirm()"
-    (cancel)="customAlert.onCancel()"
-  ></app-custom-alert>
+  <!-- Custom Alert Component -->
+<app-custom-alert [config]="alertConfig"></app-custom-alert>
+
 
   <!-- Breadcrumb and Back Navigation -->
   <div class="breadcrumb-section">
@@ -120,7 +118,7 @@
         <span class="selected-count">{{ getSelectedCount() }} item(s) selected</span>
       </div>
       <button class="btn-bulk-delete" (click)="onBulkDelete()">
-        🗑️ Delete Selected Entries
+         Delete Selected Entries
       </button>
     </div>
   }
