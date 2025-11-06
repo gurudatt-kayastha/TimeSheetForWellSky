@@ -1,0 +1,77 @@
+<div class="projects-container">
+  <!-- Page Title -->
+  <div class="page-header">
+    <h1 class="page-title">Projects</h1>
+    <p class="page-subtitle">Select a project to view timesheet entries</p>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-container">
+      <p>Loading projects...</p>
+    </div>
+  }
+
+  <!-- Projects List -->
+  @if (!loading && projects.length > 0) {
+    <div class="projects-grid">
+      @for (project of projects; track project.id) {
+        <div class="project-card">
+          <div class="project-header">
+            <h3 class="project-name">
+              <a [routerLink]="getProjectUrl(project.name)" class="project-link">
+                {{ project.name }}
+              </a>
+            </h3>
+            <span [class]="getStatusClass(project.status)" class="project-status">
+              {{ project.status }}
+            </span>
+          </div>
+          
+          <div class="project-details">
+            <p class="project-code">{{ project.code }}</p>
+            <p class="project-description">{{ project.description }}</p>
+            
+            <div class="project-info">
+              <div class="info-item">
+                <span class="info-label">Start Date:</span>
+                <span class="info-value">{{ project.startDate }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">End Date:</span>
+                <span class="info-value">{{ project.endDate }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Project Manager:</span>
+                <span class="info-value">{{ project.projectManager }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Team Size:</span>
+                <span class="info-value">{{ project.assignedUsers.length }} members</span>
+              </div>
+              <div class="info-item info-item-hours">
+                <span class="info-label">Total Logged Hours:</span>
+                <span class="info-value hours-value">{{ project.totalHours.toFixed(2) }}h</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-actions">
+            <a [routerLink]="getProjectUrl(project.name)" class="btn btn-primary">
+              <i class="icon-clock"></i> View Timesheet
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!loading && projects.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">📁</div>
+      <h3>No Projects Assigned</h3>
+      <p>You don't have any projects assigned to you at the moment.</p>
+    </div>
+  }
+</div>

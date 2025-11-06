@@ -1,13 +1,44 @@
 <div class="app-header">
-  <p class="app-title">Nitor TimeSheet Portal</p>
-
-  <!-- Show only when route is /login or /register -->
-  <div class="auth-buttons" *ngIf="showAuthButtons">
-    <a class="btn btn-outline" href="/register">Register</a>
-    <a class="btn btn-primary" href="/login">Sign In</a>
+  <div class="header-left">
+    <div class="logo">
+      <div class="nitor-logo">
+        <span class="nitor-text">Nitor</span>
+        <div class="nitor-tagline">An Ascendion Company</div>
+      </div>
+    </div>
+    
+    <!-- Projects menu moved to left -->
+    @if (!showAuthButtons) {
+      <nav class="main-nav">
+        <a class="nav-item" routerLink="/projects" [class.active]="isProjectsActive">
+          Projects
+        </a>
+      </nav>
+    }
   </div>
 
-  <div class="auth-buttons" *ngIf="showlogoutButton">
-    <a class="btn btn-primary" href="/login">LogOut</a>
+  <div class="header-center">
+    <!-- Center area can be used for search or other features -->
+  </div>
+
+  <div class="header-right">
+    <!-- Show only when route is /login or /register -->
+    @if (showAuthButtons) {
+      <div class="auth-buttons">
+        <a class="btn btn-outline" routerLink="/register">Register</a>
+        <a class="btn btn-primary" routerLink="/login">Sign In</a>
+      </div>
+    }
+
+    <!-- Show when user is logged in -->
+    @if (showlogoutButton) {
+      <div class="user-section">
+        <div class="user-info">
+          <a class="btn btn-logout" routerLink="/login" (click)="logout()">
+            <i class="icon-logout"></i> Sign out
+          </a>
+        </div>
+      </div>
+    }
   </div>
 </div>

@@ -44,7 +44,7 @@ export class Login {
     this.loginService.login(username, password).subscribe({
       next: (isValid) => {
         if (isValid) {
-          this.router.navigate(['/my-page']);
+          this.router.navigate(['/projects']);
         }
         else {
           this.errorMessage = 'Invalid username or password';
