@@ -122,13 +122,21 @@
 
         <!-- Form Actions -->
         <div class="form-actions">
-          <button type="button" class="btn btn-primary" (click)="onCreate()">
-            <i class="icon-check"></i> Create
+          <button 
+            type="button" 
+            class="btn btn-primary" 
+            (click)="onSubmit()">
+            <i class="icon-check"></i>
+            {{ isEditMode ? 'Update' : 'Create' }}
           </button>
+
+        @if (!isEditMode){
           <button type="button" class="btn btn-secondary" (click)="onCreateAndAddAnother()">
             <i class="icon-plus"></i> Create and Add Another
           </button>
-          <a class="btn-cancel" (click)="onCancel()">Cancel</a>
+        }
+
+        <a class="btn-cancel" (click)="onCancel()">Cancel</a>
         </div>
       </form>
     </div>

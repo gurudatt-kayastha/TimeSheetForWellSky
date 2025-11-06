@@ -62,6 +62,10 @@ export class LogTime implements OnInit {
   
   loading: boolean = true;
 
+  //Edit Button 
+  isEditMode: boolean = false;
+  editId: string | null = null;
+
   constructor(
     private timesheetService: TimesheetService,
     private projectService: ProjectService,
@@ -84,9 +88,39 @@ export class LogTime implements OnInit {
     // Get project name from route
     this.route.paramMap.subscribe(params => {
       this.projectName = decodeURIComponent(params.get('name') || '');
+
+      const idParam = params.get('id');
+
+      // Detect edit mode
+      if (idParam) {
+      this.isEditMode = true;
+      this.editId = idParam; // ✅ keep as string
+    }
+
       if (this.projectName) {
         this.loadProjectData();
       }
+      //Load record if in edit mode
+      if (this.isEditMode && this.editId) {
+        this.loadTimesheetForEdit(this.editId);
+      }
+    });
+  }
+
+   // 🆕 Load existing record for editing
+  loadTimesheetForEdit(id: string): void {
+    this.timesheetService.getTimesheetById(id).subscribe({
+      next: (record) => {
+        if (record) {
+          // Fill form fields with existing record
+          const [day, month, year] = record.date.split('/').map(Number);
+          this.selectedDate = { day, month, year };
+          this.selectedActivity = record.activity;
+          this.hours = record.hours;
+          this.issue = record.issue;
+        }
+      },
+      error: (err) => console.error('Error loading timesheet for edit:', err)
     });
   }
 
@@ -305,21 +339,23 @@ export class LogTime implements OnInit {
     });
   }
 
-  async onSubmit(addAnother: boolean = false): Promise<void> {
+ async onSubmit(addAnother: boolean = false): Promise<void> {
     if (!this.validateForm() || !this.currentUser || !this.project || !this.selectedDate) {
       return;
     }
 
-    // Check daily hours limit
-    const isWithinLimit = await this.checkDailyHoursLimit();
-    if (!isWithinLimit) {
-      return;
+    // Skip daily hours check in edit mode (optional)
+    if (!this.isEditMode) {
+      const isWithinLimit = await this.checkDailyHoursLimit();
+      if (!isWithinLimit) {
+        return;
+      }
     }
 
     const selectedJsDate = this.ngbDateToDate(this.selectedDate);
     const now = new Date();
-    
-    const newTimesheet: Omit<Timesheet, 'id'> = {
+
+    const timesheetData: Omit<Timesheet, 'id'> = {
       date: this.formatDateForStorage(selectedJsDate),
       user: this.currentUser.email,
       activity: this.selectedActivity,
@@ -334,22 +370,26 @@ export class LogTime implements OnInit {
       projectName: this.project.name
     };
 
-    this.timesheetService.createTimesheet(newTimesheet).subscribe({
-      next: (createdTimesheet) => {
-        console.log('Timesheet created successfully:', createdTimesheet);
-        
-        if (addAnother) {
-          // Clear form for another entry
-          this.clearForm();
-        } else {
-          // Navigate back to project timesheet page
+    if (this.isEditMode && this.editId) {
+      this.timesheetService.updateTimesheet(this.editId, timesheetData).subscribe({
+        next: () => {
           this.router.navigate(['/project', encodeURIComponent(this.projectName)]);
-        }
-      },
-      error: (error) => {
-        console.error('Error creating timesheet:', error);
-      }
-    });
+        },
+        error: (error) => console.error('Error updating timesheet:', error)
+      });
+    } else {
+      // Original create flow
+      this.timesheetService.createTimesheet(timesheetData).subscribe({
+        next: () => {
+          if (addAnother) {
+            this.clearForm();
+          } else {
+            this.router.navigate(['/project', encodeURIComponent(this.projectName)]);
+          }
+        },
+        error: (error) => console.error('Error creating timesheet:', error)
+      });
+    }
   }
 
   onCreate(): void {

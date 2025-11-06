@@ -1,8 +1,12 @@
 <div class="projects-container">
-  <!-- Page Title -->
+  <!-- Page Header -->
   <div class="page-header">
     <h1 class="page-title">Projects</h1>
-    <p class="page-subtitle">Select a project to view timesheet entries</p>
+    @if (isAdmin) {
+      <button class="btn btn-primary add-project-btn" (click)="openAddProjectDialog()">
+        <i class="icon-plus"></i> Add Project
+      </button>
+    }
   </div>
 
   <!-- Loading State -->
@@ -12,7 +16,7 @@
     </div>
   }
 
-  <!-- Projects List -->
+  <!-- Projects Grid -->
   @if (!loading && projects.length > 0) {
     <div class="projects-grid">
       @for (project of projects; track project.id) {
@@ -26,6 +30,18 @@
             <span [class]="getStatusClass(project.status)" class="project-status">
               {{ project.status }}
             </span>
+            
+            <!-- Show edit/delete buttons only for admin -->
+            @if (isAdmin) {
+              <div class="header-actions">
+                <button class="btn btn-edit" (click)="openEditProject(project)" title="Edit">
+                  ✏️
+                </button>
+                <button class="btn btn-delete" (click)="confirmDelete(project)" title="Delete">
+                  🗑️
+                </button>
+              </div>
+            }
           </div>
           
           <div class="project-details">
@@ -57,7 +73,7 @@
           </div>
 
           <div class="project-actions">
-            <a [routerLink]="getProjectUrl(project.name)" class="btn btn-primary">
+            <a class="btn btn-primary" [routerLink]="getProjectUrl(project.name)">
               <i class="icon-clock"></i> View Timesheet
             </a>
           </div>
@@ -113,6 +129,187 @@
       <div class="empty-icon">📁</div>
       <h3>No Projects Assigned</h3>
       <p>You don't have any projects assigned to you at the moment.</p>
+    </div>
+  }
+
+  <!-- Add Project Dialog -->
+  @if (showAddProjectDialog) {
+    <div class="dialog-overlay">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2>Add New Project</h2>
+        </div>
+
+        <form [formGroup]="projectForm" (ngSubmit)="addProject()">
+          <div class="form-group">
+            <label for="projectName">Project Name*</label>
+            <input id="projectName" type="text" formControlName="name" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="projectCode">Project Code*</label>
+            <input id="projectCode" type="text" formControlName="code" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="projectDescription">Description</label>
+            <textarea id="projectDescription" formControlName="description" class="form-control"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="projectStatus">Status</label>
+            <select id="projectStatus" formControlName="status" class="form-control">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="startDate">Start Date*</label>
+            <input 
+              id="startDate" 
+              type="date" 
+              formControlName="startDate" 
+              class="form-control"
+              [min]="today | date:'yyyy-MM-dd'"
+            >
+            @if (projectForm.get('startDate')?.errors?.['pastDate']) {
+              <div class="error-message">Start date cannot be in the past</div>
+            }
+          </div>
+          
+          <div class="form-group">
+            <label for="endDate">End Date*</label>
+            <input 
+              id="endDate" 
+              type="date" 
+              formControlName="endDate" 
+              class="form-control"
+            >
+            @if (projectForm.errors?.['endDateBeforeStart']) {
+              <div class="error-message">End date must be after start date</div>
+            }
+            @if (projectForm.errors?.['minimumDuration']) {
+              <div class="error-message">Project duration must be at least 30 days</div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Assigned Users</label>
+            <div class="checkbox-list">
+              <label class="checkbox-item" *ngFor="let user of availableUsers">
+                <input
+                  type="checkbox"
+                  [checked]="isAssigned(user.email)"
+                  (change)="toggleAssigned(user.email, $event.target.checked)"
+                />
+                <span class="checkbox-label">{{ user.firstName }} {{ user.lastName }} ({{ user.email }})</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="dialog-actions">
+            <button type="button" class="btn btn-secondary" (click)="closeAddProjectDialog()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!projectForm.valid">Create Project</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- Delete Confirmation Dialog -->
+  <div class="dialog-overlay" *ngIf="showDeleteDialog">
+    <div class="dialog-content delete-dialog">
+      <div class="dialog-header">
+        <h3>Delete Project</h3>
+        <button type="button" class="close-button" (click)="cancelDelete()">×</button>
+      </div>
+
+      <p>Are you sure you want to delete project "<strong>{{ projectToDelete?.name }}</strong>"?</p>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="deleteProject()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Project Dialog -->
+  @if (showEditProjectDialog) {
+    <div class="dialog-overlay">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2>Edit Project</h2>
+          <button type="button" class="close-button" (click)="closeEditProjectDialog()">×</button>
+        </div>
+
+        <form [formGroup]="projectForm" (ngSubmit)="updateProject()">
+          <div class="form-group">
+            <label for="editProjectName">Project Name*</label>
+            <input id="editProjectName" type="text" formControlName="name" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="editProjectCode">Project Code*</label>
+            <input id="editProjectCode" type="text" formControlName="code" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="editProjectDescription">Description</label>
+            <textarea id="editProjectDescription" formControlName="description" class="form-control"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="editProjectStatus">Status</label>
+            <select id="editProjectStatus" formControlName="status" class="form-control">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="editStartDate">Start Date*</label>
+            <input 
+              id="editStartDate" 
+              type="date" 
+              formControlName="startDate" 
+              class="form-control"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label for="editEndDate">End Date*</label>
+            <input 
+              id="editEndDate" 
+              type="date" 
+              formControlName="endDate" 
+              class="form-control"
+            >
+            @if (projectForm.errors?.['minimumDuration']) {
+              <div class="error-message">Project duration must be at least 30 days</div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Assigned Users</label>
+            <div class="checkbox-list">
+              <label class="checkbox-item" *ngFor="let user of availableUsers">
+                <input
+                  type="checkbox"
+                  [checked]="isAssigned(user.email)"
+                  (change)="toggleAssigned(user.email, $event.target.checked)"
+                />
+                <span class="checkbox-label">{{ user.firstName }} {{ user.lastName }} ({{ user.email }})</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="dialog-actions">
+            <button type="button" class="btn btn-secondary" (click)="closeEditProjectDialog()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!projectForm.valid">Update Project</button>
+          </div>
+        </form>
+      </div>
     </div>
   }
 </div>
