@@ -47,6 +47,18 @@
       "language": "en",
       "employeeId": "NITP2344",
       "dateOfJoining": "2025-11-05"
+    },
+    {
+      "id": "9f32",
+      "login": "Tanaya",
+      "password": "ABCD@123",
+      "role": "Admin",
+      "firstName": "Tanaya",
+      "lastName": "Tanaya",
+      "email": "tanaya.patole@nitorinfotech.com",
+      "language": "en",
+      "employeeId": "1212",
+      "dateOfJoining": "2025-11-04"
     }
   ],
   "projects": [
