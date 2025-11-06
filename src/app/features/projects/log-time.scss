@@ -511,3 +511,7 @@ select.form-control {
   max-width: 220px;
   width: 100%;
 }
+::ng-deep .ngb-dp-weekday {
+  color: #555 !important;
+  font-weight: 1000;
+}
