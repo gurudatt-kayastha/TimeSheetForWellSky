@@ -110,6 +110,18 @@
     </div>
   </div>
 
+  <!-- Bulk Actions Bar -->
+  @if (getSelectedCount() > 0) {
+    <div class="bulk-actions-bar">
+      <div class="selected-info">
+        <span class="selected-count">{{ getSelectedCount() }} item(s) selected</span>
+      </div>
+      <button class="btn-bulk-delete" (click)="onBulkDelete()">
+        🗑️ Delete Selected Entries
+      </button>
+    </div>
+  }
+
   <!-- Data Table -->
   @if (!loading) {
     <div class="table-container">
@@ -117,7 +129,11 @@
         <thead>
           <tr>
             <th class="checkbox-column">
-              <input type="checkbox">
+              <input 
+                type="checkbox" 
+                [checked]="selectAll" 
+                (change)="toggleSelectAll($event)"
+              >
             </th>
             <th class="sortable">
               DATE
@@ -140,7 +156,11 @@
           @for (timesheet of filteredTimesheets; track timesheet.id) {
             <tr class="table-row">
               <td class="checkbox-column">
-                <input type="checkbox">
+                <input 
+                  type="checkbox" 
+                  [checked]="isTimesheetSelected(timesheet.id)"
+                  (change)="toggleSelectTimesheet(timesheet.id, $event)"
+                >
               </td>
               <td class="date-column">{{ timesheet.date }}</td>
               @if (!isEmployee) {
