@@ -260,7 +260,7 @@ export class ProjectTimesheet implements OnInit {
     );
 
     if (approvedTimesheets.length > 0) {
-      alert(`Cannot delete ${approvedTimesheets.length} approved timesheet entries. Only pending entries can be deleted.`);
+      // alert(`Cannot delete ${approvedTimesheets.length} approved timesheet entries. Only pending entries can be deleted.`);
       return;
     }
 
@@ -284,12 +284,9 @@ export class ProjectTimesheet implements OnInit {
           this.calculateTotalHours();
           this.loadProjectTotalHours();
           this.clearSelections();
-          
-          alert(`Successfully deleted ${count} timesheet entries.`);
         })
         .catch((error) => {
           console.error('Error deleting timesheets:', error);
-          alert('Error deleting some timesheet entries. Please try again.');
         });
     }
   }

@@ -371,10 +371,8 @@ export class LogTime implements OnInit {
     };
 
     if (this.isEditMode && this.editId) {
-      // 🆕 Update existing record
       this.timesheetService.updateTimesheet(this.editId, timesheetData).subscribe({
         next: () => {
-          alert('Timesheet updated successfully!');
           this.router.navigate(['/project', encodeURIComponent(this.projectName)]);
         },
         error: (error) => console.error('Error updating timesheet:', error)
@@ -383,7 +381,6 @@ export class LogTime implements OnInit {
       // Original create flow
       this.timesheetService.createTimesheet(timesheetData).subscribe({
         next: () => {
-          alert('Timesheet created successfully!');
           if (addAnother) {
             this.clearForm();
           } else {
