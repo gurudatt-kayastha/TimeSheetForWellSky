@@ -61,11 +61,53 @@
               <i class="icon-clock"></i> View Timesheet
             </a>
           </div>
+
+          <div *ngIf="isAdmin" class="admin-actions-container">
+            <div class="admin-actions-header">
+              <label class="select-all">
+                <input type="checkbox"
+                       (change)="toggleSelectAll(project.id, $event.target.checked)"
+                       [checked]="areAllUsersSelected(project.id)">
+                Select all users
+              </label>
+
+              <div class="action-buttons">
+                <button class="btn btn-secondary"
+                        (click)="openUserSelectionList(project)"
+                        title="Select users">
+                  Manage Users
+                </button>
+                <button class="btn btn-primary"
+                        (click)="approveSelected(project)"
+                        [disabled]="!hasSelection(project.id)">
+                  ✅ Approve Selected
+                </button>
+                <button class="btn btn-danger"
+                        (click)="rejectSelected(project)"
+                        [disabled]="!hasSelection(project.id)">
+                  ❌ Reject Selected
+                </button>
+              </div>
+            </div>
+
+            <div class="admin-user-list" *ngIf="showUserListForProject[project.id]">
+              <div *ngFor="let u of project.assignedUsers" class="admin-user-item">
+                <label>
+                  <input type="checkbox"
+                         [checked]="isUserSelected(project.id, u)"
+                         (change)="toggleUserSelection(project.id, u, $event.target.checked)">
+                  <span class="user-name">{{ u }}</span>
+                  <small class="user-meta">(member)</small>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
       }
     </div>
   }
 
+  <!-- Empty State -->
   @if (!loading && projects.length === 0) {
     <div class="empty-state">
       <div class="empty-icon">📁</div>

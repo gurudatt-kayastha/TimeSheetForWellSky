@@ -226,46 +226,83 @@
   margin: 0;
 }
 
-// Responsive design
+/* Responsive */
 @media (max-width: 768px) {
-  .projects-container {
-    padding: 15px;
-  }
-
-  .projects-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  .project-card {
-    padding: 15px;
-  }
-
-  .project-header {
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
-  }
-
-  .project-info {
-    grid-template-columns: 1fr;
-  }
-
-  .project-actions {
-    justify-content: center;
-  }
+  .projects-container { padding: 15px; }
+  .projects-grid { grid-template-columns: 1fr; gap: 15px; }
+  .project-card { padding: 15px; }
+  .project-header { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .project-info { grid-template-columns: 1fr; }
+  .project-actions { justify-content: center; }
 }
 
 @media (max-width: 480px) {
-  .page-title {
-    font-size: 24px;
-  }
-
-  .page-subtitle {
-    font-size: 14px;
-  }
-
-  .project-name {
-    font-size: 18px;
-  }
+  .page-title { font-size: 24px; }
+  .page-subtitle { font-size: 14px; }
+  .project-name { font-size: 18px; }
 }
+
+/* --- Admin appended styles --- */
+.admin-actions-container {
+  margin-top: 12px;
+  border-top: 1px dashed #e9ecef;
+  padding-top: 12px;
+}
+
+.admin-actions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.select-all {
+  font-size: 13px;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-secondary {
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: #f1f3f4;
+  border: 1px solid #dcdfe3;
+  cursor: pointer;
+}
+
+.btn-secondary:hover { transform: translateY(-1px); }
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+  border: 1px solid #dc3545;
+}
+
+.admin-user-list {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.admin-user-item {
+  background: #fafbfc;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #eef1f4;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+
+.user-name { font-weight: 500; margin-left: 6px; }
+.user-meta { color: #6c757d; margin-left: 6px; font-size: 12px; }
