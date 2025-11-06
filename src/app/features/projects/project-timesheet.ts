@@ -22,7 +22,7 @@ export class ProjectTimesheet implements OnInit {
   loading: boolean = true;
   projectName: string = '';
   project: Project | null = null;
-  currentUser: string = 'nehal.patel@nitorinfotech.com'; // This should come from auth service
+  currentUser: string = JSON.parse(localStorage.getItem('currentUser') || '{}')?.email || '';
   isEmployee: boolean = false;
   
   // Filter properties
@@ -30,6 +30,11 @@ export class ProjectTimesheet implements OnInit {
   selectedStatus: string = 'any';
   selectedUser: string = 'all';
   selectedActivity: string = 'any';
+  selectedUnit: string = 'any'; // ✅ added for Unit filter
+
+  // Bulk delete properties
+  selectedTimesheets: Set<string> = new Set();
+  selectAll: boolean = false;
 
   constructor(
     private timesheetService: TimesheetService,
@@ -153,10 +158,18 @@ export class ProjectTimesheet implements OnInit {
         matches = matches && timesheet.user === this.selectedUser;
       }
 
+      // ✅ Unit filter
+      if (this.selectedUnit !== 'any') {
+  matches = matches && timesheet.unit?.toLowerCase() === this.selectedUnit.toLowerCase();
+}
+
+
       return matches;
     });
 
     this.calculateTotalHours();
+    // Clear selections when filters change
+    this.clearSelections();
   }
 
   private isSameDay(date1: Date, date2: Date): boolean {
@@ -192,27 +205,118 @@ export class ProjectTimesheet implements OnInit {
     this.selectedStatus = 'any';
     this.selectedUser = 'all';
     this.selectedActivity = 'any';
+    this.selectedUnit = 'any'; // ✅ reset unit
     this.filteredTimesheets = [...this.timesheets];
     this.calculateTotalHours();
+    this.clearSelections();
+  }
+
+  // Bulk selection methods
+  toggleSelectAll(event: any): void {
+    this.selectAll = event.target.checked;
+    this.selectedTimesheets.clear();
+    
+    if (this.selectAll) {
+      this.filteredTimesheets.forEach(timesheet => {
+        this.selectedTimesheets.add(timesheet.id);
+      });
+    }
+  }
+
+  toggleSelectTimesheet(timesheetId: string, event: any): void {
+    if (event.target.checked) {
+      this.selectedTimesheets.add(timesheetId);
+    } else {
+      this.selectedTimesheets.delete(timesheetId);
+      this.selectAll = false;
+    }
+  }
+
+  isTimesheetSelected(timesheetId: string): boolean {
+    return this.selectedTimesheets.has(timesheetId);
+  }
+
+  getSelectedCount(): number {
+    return this.selectedTimesheets.size;
+  }
+
+  clearSelections(): void {
+    this.selectedTimesheets.clear();
+    this.selectAll = false;
+  }
+
+  onBulkDelete(): void {
+    if (this.selectedTimesheets.size === 0) {
+      return;
+    }
+
+    // Check if any selected timesheet is approved
+    const selectedTimesheetsArray = this.filteredTimesheets.filter(t => 
+      this.selectedTimesheets.has(t.id)
+    );
+    
+    const approvedTimesheets = selectedTimesheetsArray.filter(t => 
+      t.approvalStatus.toLowerCase() === 'approved'
+    );
+
+    if (approvedTimesheets.length > 0) {
+      // alert(`Cannot delete ${approvedTimesheets.length} approved timesheet entries. Only pending entries can be deleted.`);
+      return;
+    }
+
+    // Show confirmation
+    const count = this.selectedTimesheets.size;
+    const message = count === 1 
+      ? 'Are you sure you want to delete this timesheet entry?' 
+      : `Are you sure you want to delete ${count} timesheet entries?`;
+    
+    if (confirm(message)) {
+      const deletePromises = Array.from(this.selectedTimesheets).map(id =>
+        this.timesheetService.deleteTimesheet(id).toPromise()
+      );
+
+      Promise.all(deletePromises)
+        .then(() => {
+          // Remove deleted entries from local arrays
+          this.timesheets = this.timesheets.filter(t => !this.selectedTimesheets.has(t.id));
+          this.filteredTimesheets = this.filteredTimesheets.filter(t => !this.selectedTimesheets.has(t.id));
+          
+          this.calculateTotalHours();
+          this.loadProjectTotalHours();
+          this.clearSelections();
+        })
+        .catch((error) => {
+          console.error('Error deleting timesheets:', error);
+        });
+    }
   }
 
   onLogTime(): void {
-    // Implementation for logging new time entry
-    console.log('Log time for project:', this.projectName);
+    this.router.navigate(['/project', encodeURIComponent(this.projectName), 'log-time']);
   }
 
   onEditTimesheet(timesheet: Timesheet): void {
-    // Implementation for editing timesheet entry
-    console.log('Edit timesheet:', timesheet);
-    // TODO: Open edit modal or navigate to edit page
-  }
+  this.router.navigate([
+    '/project',
+    encodeURIComponent(this.projectName),
+    'log-time',
+    timesheet.id
+  ]);
+}
+
+
 
   onDeleteTimesheet(timesheet: Timesheet): void {
+    // Check if the timesheet is approved
+    if (timesheet.approvalStatus.toLowerCase() === 'approved') {
+      alert('Cannot delete an approved timesheet entry. Only pending entries can be deleted.');
+      return;
+    }
+
     // Implementation for deleting timesheet entry
     if (confirm(`Are you sure you want to delete this timesheet entry from ${timesheet.date}?`)) {
       this.timesheetService.deleteTimesheet(timesheet.id).subscribe({
         next: () => {
-          // Remove from local arrays
           this.timesheets = this.timesheets.filter(t => t.id !== timesheet.id);
           this.filteredTimesheets = this.filteredTimesheets.filter(t => t.id !== timesheet.id);
           this.calculateTotalHours();

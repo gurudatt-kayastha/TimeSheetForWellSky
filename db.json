@@ -35,6 +35,18 @@
       "language": "en",
       "employeeId": "OMKAR123",
       "dateOfJoining": "2025-11-03"
+    },
+    {
+      "id": "7a93",
+      "login": "ravindra.shahane",
+      "password": "ravindrashahane",
+      "role": "Employee",
+      "firstName": "Ravindra",
+      "lastName": "Shahane",
+      "email": "ravindra.shahane@nitorinfotech.com",
+      "language": "en",
+      "employeeId": "NITP2344",
+      "dateOfJoining": "2025-11-05"
     }
   ],
   "projects": [
@@ -202,6 +214,51 @@
       "author": "nehal.patel@nitorinfotech.com",
       "projectId": "proj-2",
       "projectName": "WellSky Offshore Blood Centers AI"
+    },
+    {
+      "date": "03/11/2025",
+      "user": "rohit.sali@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "Timesheet portal database creation",
+      "comment": "",
+      "hours": 8,
+      "approvalStatus": "Pending",
+      "created": "06/11/2025 01:02 PM",
+      "unit": "Unit 2",
+      "author": "rohit.sali@nitorinfotech.com",
+      "projectId": "proj-1",
+      "projectName": "NIT Talent Pool",
+      "id": "11"
+    },
+    {
+      "date": "04/11/2025",
+      "user": "rohit.sali@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "Timesheet Portal Log button page implementation done",
+      "comment": "",
+      "hours": 8,
+      "approvalStatus": "Pending",
+      "created": "06/11/2025 01:04 PM",
+      "unit": "Unit 2",
+      "author": "rohit.sali@nitorinfotech.com",
+      "projectId": "proj-1",
+      "projectName": "NIT Talent Pool",
+      "id": "12"
+    },
+    {
+      "id": "13",
+      "date": "05/11/2025",
+      "user": "rohit.sali@nitorinfotech.com",
+      "activity": "Task",
+      "issue": "Laptop  setup",
+      "comment": "",
+      "hours": 8,
+      "approvalStatus": "Pending",
+      "created": "06/11/2025 10:50 AM",
+      "unit": "Unit 2",
+      "author": "rohit.sali@nitorinfotech.com",
+      "projectId": "proj-1",
+      "projectName": "NIT Talent Pool"
     }
   ]
 }

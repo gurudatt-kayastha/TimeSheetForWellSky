@@ -1,0 +1,156 @@
+<div class="log-time-container">
+  <!-- Breadcrumb Navigation -->
+  <div class="breadcrumb-section">
+    <div class="breadcrumb">
+      <a href="/projects">Projects</a> 
+      <span class="separator">/</span> 
+      <a [href]="'/project/' + projectName">{{ projectName }}</a>
+      <span class="separator">/</span> 
+      <span class="current">Log Time</span>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">Log Time Entry</h1>
+    @if (project) {
+      <p class="page-subtitle">{{ project.name }} ({{ project.code }})</p>
+    }
+  </div>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-container">
+      <p>Loading project information...</p>
+    </div>
+  }
+
+  <!-- Form -->
+  @if (!loading && project) {
+    <div class="form-container">
+      <form class="log-time-form">
+        
+        <!-- Date Field -->
+        <div class="form-group">
+          <label for="date" class="form-label required">Date</label>
+          <div class="input-group">
+            <input 
+              class="form-control"
+              [class.error]="dateError"
+              placeholder="DD-MM-YYYY"
+              name="datepicker"
+              [(ngModel)]="selectedDate"
+              ngbDatepicker 
+              #d="ngbDatepicker"
+              [minDate]="minDateStruct!"
+              [maxDate]="maxDateStruct!"
+              [markDisabled]="isDisabled"
+              (ngModelChange)="onDateChange()"
+              (click)="d.toggle()"
+              readonly
+              required>
+            <button 
+              class="btn btn-calendar" 
+              (click)="d.toggle()" 
+              type="button">
+              📅
+            </button>
+          </div>
+          @if (dateError) {
+            <span class="error-message">{{ dateError }}</span>
+          }
+        </div>
+
+        <!-- Activity Dropdown -->
+        <div class="form-group">
+          <label for="activity" class="form-label required">Activity</label>
+          <select 
+            id="activity" 
+            class="form-control"
+            [class.error]="activityError"
+            [(ngModel)]="selectedActivity"
+            name="activity"
+            required>
+            <option value="" disabled selected>Select an activity</option>
+            @for (activity of activities; track activity) {
+              <option [value]="activity">{{ activity }}</option>
+            }
+          </select>
+          @if (activityError) {
+            <span class="error-message">{{ activityError }}</span>
+          }
+        </div>
+
+        <!-- Hours Field -->
+        <div class="form-group">
+          <label for="hours" class="form-label required">Hours</label>
+          <input 
+            type="number" 
+            id="hours" 
+            class="form-control"
+            [class.error]="hoursError"
+            [(ngModel)]="hours"
+            name="hours"
+            min="1"
+            max="9"
+            step="1"
+            placeholder="Enter hours"
+            required>
+          @if (hoursError) {
+            <span class="error-message">{{ hoursError }}</span>
+          }
+        </div>
+
+        <!-- Issue Field -->
+        <div class="form-group">
+          <label for="issue" class="form-label required">Issue/Task Description</label>
+          <textarea 
+            id="issue" 
+            class="form-control textarea-control"
+            [class.error]="issueError"
+            [(ngModel)]="issue"
+            name="issue"
+            rows="4"
+            maxlength="500"
+            placeholder="Describe the task or issue you worked on (minimum 10 characters)"
+            required></textarea>
+          @if (issueError) {
+            <span class="error-message">{{ issueError }}</span>
+          }
+          <span class="form-hint">{{ issue.length }}/500 characters (minimum 10)</span>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button 
+            type="button" 
+            class="btn btn-primary" 
+            (click)="onSubmit()">
+            <i class="icon-check"></i>
+            {{ isEditMode ? 'Update' : 'Create' }}
+          </button>
+
+        @if (!isEditMode){
+          <button type="button" class="btn btn-secondary" (click)="onCreateAndAddAnother()">
+            <i class="icon-plus"></i> Create and Add Another
+          </button>
+        }
+
+        <a class="btn-cancel" (click)="onCancel()">Cancel</a>
+        </div>
+      </form>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (!loading && !project) {
+    <div class="error-state">
+      <div class="error-icon">⚠️</div>
+      <h3>Project Not Found</h3>
+      <p>The project "{{ projectName }}" could not be found.</p>
+      <button class="btn btn-primary" (click)="goBackToProject()">
+        Back to Projects
+      </button>
+    </div>
+  }
+</div>
