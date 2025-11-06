@@ -1,5 +1,5 @@
 .log-time-container {
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -7,11 +7,11 @@
 
 /* Breadcrumb Section */
 .breadcrumb-section {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .breadcrumb {
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
 
   a {
@@ -24,7 +24,7 @@
   }
 
   .separator {
-    margin: 0 8px;
+    margin: 0 6px;
     color: #999;
   }
 
@@ -36,20 +36,20 @@
 
 /* Page Header */
 .page-header {
-  margin-bottom: 30px;
-  padding-bottom: 20px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
   border-bottom: 2px solid #e0e0e0;
 }
 
 .page-title {
-  font-size: 28px;
+  font-size: 24px;
   color: #333;
-  margin: 0 0 5px 0;
+  margin: 0 0 4px 0;
   font-weight: 600;
 }
 
 .page-subtitle {
-  font-size: 16px;
+  font-size: 14px;
   color: #666;
   margin: 0;
 }
@@ -57,9 +57,9 @@
 /* Loading State */
 .loading-container {
   text-align: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   color: #666;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 /* Form Container */
@@ -67,25 +67,25 @@
   background: white;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 30px;
+  padding: 18px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .log-time-form {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 14px;
 }
 
 /* Form Groups */
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 5px;
 }
 
 .form-label {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #333;
   display: block;
@@ -97,17 +97,17 @@
 }
 
 .form-control {
-  padding: 10px 12px;
+  padding: 6px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
   font-family: Arial, sans-serif;
   transition: border-color 0.2s, box-shadow 0.2s;
 
   &:focus {
     outline: none;
     border-color: #0066cc;
-    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
   }
 
   &.error {
@@ -115,7 +115,7 @@
 
     &:focus {
       border-color: #d32f2f;
-      box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+      box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.1);
     }
   }
 
@@ -127,7 +127,8 @@
 
 .textarea-control {
   resize: vertical;
-  min-height: 80px;
+  min-height: 55px;
+  max-height: 110px;
   font-family: Arial, sans-serif;
 }
 
@@ -137,18 +138,20 @@ select.form-control {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 35px;
+  background-position: right 10px center;
+  padding-right: 30px;
+  height: 34px;
 }
 
 input[type="number"].form-control {
-  max-width: 150px;
+  max-width: 140px;
+  height: 34px;
 }
 
 input[type="date"].form-control {
-  max-width: 200px;
+  max-width: 190px;
+  height: 34px;
   
-  /* Fix date input placeholder appearance */
   &::-webkit-datetime-edit-text,
   &::-webkit-datetime-edit-month-field,
   &::-webkit-datetime-edit-day-field,
@@ -165,23 +168,28 @@ input[type="date"].form-control {
 .input-group {
   display: flex;
   align-items: stretch;
-  max-width: 250px;
+  max-width: 220px;
+  height: 34px;
 
   .form-control {
     flex: 1;
     border-radius: 4px 0 0 4px;
     cursor: pointer;
+    height: 34px;
   }
 
   .btn-calendar {
     border: 1px solid #ccc;
     border-left: none;
     background-color: white;
-    padding: 10px 15px;
+    padding: 0 11px;
     border-radius: 0 4px 4px 0;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 15px;
     transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
       background-color: #f5f5f5;
@@ -191,14 +199,15 @@ input[type="date"].form-control {
 
 /* Form Hints */
 .form-hint {
-  font-size: 12px;
+  font-size: 11px;
   color: #666;
   font-style: italic;
+  margin-top: -2px;
 }
 
 /* Error Messages */
 .error-message {
-  font-size: 12px;
+  font-size: 11px;
   color: #d32f2f;
   font-weight: 500;
   display: flex;
@@ -207,30 +216,30 @@ input[type="date"].form-control {
 
   &::before {
     content: "⚠";
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
 /* Form Actions */
 .form-actions {
   display: flex;
-  gap: 15px;
-  padding-top: 10px;
-  margin-top: 10px;
+  gap: 10px;
+  padding-top: 8px;
+  margin-top: 6px;
   border-top: 1px solid #e0e0e0;
   align-items: center;
 }
 
 .btn {
-  padding: 10px 20px;
+  padding: 6px 14px;
   border: none;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   transition: background-color 0.2s, transform 0.1s;
 
   &:hover {
@@ -242,7 +251,7 @@ input[type="date"].form-control {
   }
 
   i {
-    font-size: 16px;
+    font-size: 13px;
   }
 }
 
@@ -279,9 +288,9 @@ input[type="date"].form-control {
 .btn-cancel {
   color: #0066cc;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
-  padding: 10px 15px;
+  padding: 6px 12px;
 
   &:hover {
     text-decoration: underline;
@@ -291,23 +300,23 @@ input[type="date"].form-control {
 /* Error State */
 .error-state {
   text-align: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
 
   .error-icon {
-    font-size: 64px;
-    margin-bottom: 20px;
+    font-size: 48px;
+    margin-bottom: 15px;
   }
 
   h3 {
-    font-size: 24px;
+    font-size: 20px;
     color: #333;
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
   }
 
   p {
-    font-size: 16px;
+    font-size: 14px;
     color: #666;
-    margin: 0 0 30px 0;
+    margin: 0 0 20px 0;
   }
 }
 
@@ -320,52 +329,35 @@ input[type="date"].form-control {
   content: "+";
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .log-time-container {
-    padding: 15px;
-  }
-
-  .form-container {
-    padding: 20px;
-  }
-
-  .form-actions {
-    flex-direction: column;
-    align-items: stretch;
-
-    .btn {
-      width: 100%;
-      justify-content: center;
-    }
-
-    .btn-cancel {
-      text-align: center;
-    }
-  }
-
-  input[type="number"].form-control,
-  input[type="date"].form-control {
-    max-width: 100%;
-  }
-}
-/* NgBootstrap Datepicker Custom Styles */
+/* NgBootstrap Datepicker Custom Styles - Compact with larger dates */
 ::ng-deep {
-  // Month/Year navigation
+  ngb-datepicker {
+    font-size: 0.85rem;
+    transform: scale(0.85);
+    transform-origin: top left;
+  }
+
   .ngb-dp-header {
     background-color: #f8f9fa;
     border-bottom: 1px solid #dee2e6;
+    padding: 0.25rem 0.3rem;
   }
 
   .ngb-dp-navigation-select {
     select {
       font-weight: 600;
       color: #333;
+      font-size: 11px;
+      padding: 0.15rem 0.3rem;
     }
   }
 
   .ngb-dp-arrow {
     button {
+      width: 1.3rem;
+      height: 1.3rem;
+      font-size: 0.9rem;
+      
       &:hover {
         background-color: #e9ecef;
       }
@@ -375,11 +367,20 @@ input[type="date"].form-control {
   .ngb-dp-weekday {
     color: #333;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 10px;
+    padding: 0.1rem 0;
+    margin: 0;
+  }
+
+  .ngb-dp-week {
+    padding: 0;
+    margin: 0;
   }
 
   .ngb-dp-day {
-    // Disabled dates (weekends, out of range)
+    padding: 0 !important;
+    margin: 0 !important;
+
     &.disabled {
       .btn-light {
         color: #999 !important;
@@ -389,7 +390,6 @@ input[type="date"].form-control {
       }
     }
 
-    // Dates outside current month but selectable
     &.outside {
       .btn-light {
         color: #333 !important;
@@ -410,13 +410,20 @@ input[type="date"].form-control {
       }
     }
 
-    // All selectable dates
     .btn-light {
       color: #333 !important;
       background-color: white !important;
       border: 1px solid transparent;
       opacity: 1 !important;
-      font-size: 14px;
+      font-size: 15px;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      margin: 0 !important;
+      line-height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       
       &:hover:not(:disabled) {
         background-color: #e3f2fd !important;
@@ -424,12 +431,11 @@ input[type="date"].form-control {
       }
 
       &:focus {
-        box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+        box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
         outline: none;
       }
     }
 
-    // Selected date
     &.selected .btn-light {
       background-color: #0066cc !important;
       color: white !important;
@@ -437,17 +443,75 @@ input[type="date"].form-control {
       font-weight: 600 !important;
     }
 
-    // Today's date
     &.today:not(.selected) {
       .btn-light {
-        border: 2px solid #0066cc !important;
+        border: 1.5px solid #0066cc !important;
         font-weight: 600 !important;
       }
     }
   }
 
-  // Dropdown positioning
   .ngb-dp-months {
     background-color: white;
   }
+
+  .ngb-dp-content {
+    padding: 0.25rem;
+  }
+
+  .ngb-dp-month {
+    pointer-events: auto;
+  }
+
+  .ngb-dp-weekdays {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.1rem;
+    margin-bottom: 0;
+  }
+
+  // Remove extra spacing
+  .ngb-dp-months {
+    margin: 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .log-time-container {
+    padding: 15px;
+  }
+
+  .form-container {
+    padding: 16px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-cancel {
+      text-align: center;
+    }
+  }
+
+  input[type="number"].form-control,
+  input[type="date"].form-control,
+  .input-group {
+    max-width: 100%;
+  }
+}
+input[type="number"].form-control,
+input[type="date"].form-control,
+select.form-control {
+  max-width: 220px;
+  width: 100%;
+}
+::ng-deep .ngb-dp-weekday {
+  color: #555 !important;
+  font-weight: 1000;
 }
