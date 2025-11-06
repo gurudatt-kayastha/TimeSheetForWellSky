@@ -30,6 +30,7 @@ export class ProjectTimesheet implements OnInit {
   selectedStatus: string = 'any';
   selectedUser: string = 'all';
   selectedActivity: string = 'any';
+  selectedUnit: string = 'any'; // ✅ added for Unit filter
 
   constructor(
     private timesheetService: TimesheetService,
@@ -153,6 +154,12 @@ export class ProjectTimesheet implements OnInit {
         matches = matches && timesheet.user === this.selectedUser;
       }
 
+      // ✅ Unit filter
+      if (this.selectedUnit !== 'any') {
+  matches = matches && timesheet.unit?.toLowerCase() === this.selectedUnit.toLowerCase();
+}
+
+
       return matches;
     });
 
@@ -192,26 +199,23 @@ export class ProjectTimesheet implements OnInit {
     this.selectedStatus = 'any';
     this.selectedUser = 'all';
     this.selectedActivity = 'any';
+    this.selectedUnit = 'any'; // ✅ reset unit
     this.filteredTimesheets = [...this.timesheets];
     this.calculateTotalHours();
   }
 
   onLogTime(): void {
-  this.router.navigate(['/project', encodeURIComponent(this.projectName), 'log-time']);
+    this.router.navigate(['/project', encodeURIComponent(this.projectName), 'log-time']);
   }
 
   onEditTimesheet(timesheet: Timesheet): void {
-    // Implementation for editing timesheet entry
     console.log('Edit timesheet:', timesheet);
-    // TODO: Open edit modal or navigate to edit page
   }
 
   onDeleteTimesheet(timesheet: Timesheet): void {
-    // Implementation for deleting timesheet entry
     if (confirm(`Are you sure you want to delete this timesheet entry from ${timesheet.date}?`)) {
       this.timesheetService.deleteTimesheet(timesheet.id).subscribe({
         next: () => {
-          // Remove from local arrays
           this.timesheets = this.timesheets.filter(t => t.id !== timesheet.id);
           this.filteredTimesheets = this.filteredTimesheets.filter(t => t.id !== timesheet.id);
           this.calculateTotalHours();
