@@ -32,6 +32,9 @@ export class Projects implements OnInit {
   showEditProjectDialog = false;
   selectedProject: Project | null = null;
 
+  // New property to check if the user is an admin
+  isAdmin: boolean = false;
+
   constructor(
     private projectService: ProjectService,
     private timesheetService: TimesheetService,
@@ -51,6 +54,10 @@ export class Projects implements OnInit {
 
     // Load available users (you'll need to implement this service)
     this.loadAvailableUsers();
+
+    // Check user role from localStorage
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.isAdmin = user.role === 'Admin';
   }
 
   ngOnInit(): void {
@@ -132,6 +139,7 @@ export class Projects implements OnInit {
   }
 
   addProject(): void {
+    if (!this.isAdmin) return;
     if (this.projectForm.valid) {
       const formValue = this.projectForm.value;
       const newProject: Omit<Project, 'id'> = {
@@ -215,6 +223,7 @@ export class Projects implements OnInit {
   }
 
   confirmDelete(project: Project): void {
+    if (!this.isAdmin) return;
     this.projectToDelete = project;
     this.showDeleteDialog = true;
   }
@@ -242,6 +251,7 @@ export class Projects implements OnInit {
   }
 
   openEditProject(project: Project): void {
+    if (!this.isAdmin) return;
     // Reset form with edit-specific validators
     this.projectForm = this.fb.group({
       name: [project.name, Validators.required],
