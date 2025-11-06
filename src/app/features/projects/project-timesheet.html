@@ -1,4 +1,11 @@
 <div class="project-timesheet-container">
+  <!-- Custom Alert Component -->
+  <app-custom-alert 
+    [config]="alertConfig"
+    (confirm)="customAlert.onConfirm()"
+    (cancel)="customAlert.onCancel()"
+  ></app-custom-alert>
+
   <!-- Breadcrumb and Back Navigation -->
   <div class="breadcrumb-section">
     <button class="btn-back" (click)="goBackToProjects()">
@@ -65,15 +72,14 @@
       </div>
 
       <div class="filter-item">
-  <label for="unit-filter">Unit</label>
-  <select class="filter-select" [(ngModel)]="selectedUnit">
-    <option value="any">Any</option>
-    <option value="Unit 1">Unit 1</option>
-    <option value="Unit 2">Unit 2</option>
-    <option value="Unit 3">Unit 3</option>
-  </select>
-</div>
-
+        <label for="unit-filter">Unit</label>
+        <select class="filter-select" [(ngModel)]="selectedUnit">
+          <option value="any">Any</option>
+          <option value="Unit 1">Unit 1</option>
+          <option value="Unit 2">Unit 2</option>
+          <option value="Unit 3">Unit 3</option>
+        </select>
+      </div>
 
       @if (!isEmployee) {
         <div class="filter-item">
@@ -100,10 +106,6 @@
 
   <!-- Total Hours Display -->
   <div class="hours-summary">
-    <!-- <div class="hours-card">
-      <span class="hours-label">Your Hours on {{ projectName }}:</span>
-      <span class="hours-value">{{ totalHours.toFixed(2) }}h</span>
-    </div> -->
     <div class="hours-card total-project-hours">
       <span class="hours-label">Total Project Hours (All Team):</span>
       <span class="hours-value">{{ projectTotalHours.toFixed(2) }}h</span>
