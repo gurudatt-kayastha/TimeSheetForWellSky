@@ -1,0 +1,34 @@
+<div class="modal-backdrop">
+  <div class="modal">
+    <h3>Confirm Changes</h3>
+
+    <div *ngIf="changes.length; else none">
+      <p>The following changes will be applied:</p>
+      <ul>
+        <li *ngFor="let c of changes">
+          <strong>{{ c.entry.user }}</strong> — {{ c.entry.project }} — 
+          {{ c.entry.date | date:'mediumDate' }}: will become 
+          <em>{{ c.newStatus }}</em>
+          <div class="small">
+            Current: {{ c.entry.status }} | Unit: {{ c.entry.unit }} | Activity: {{ c.entry.activity }}
+          </div>
+        </li>
+      </ul>
+
+      <label>Optional comment for change (applies to all changes):</label>
+      <textarea [(ngModel)]="comment" rows="3"></textarea>
+
+      <div class="actions">
+        <button (click)="confirm()">Confirm & Save</button>
+        <button (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+
+    <ng-template #none>
+      <p>No pending changes to save.</p>
+      <div class="actions">
+        <button (click)="cancel()">Close</button>
+      </div>
+    </ng-template>
+  </div>
+</div>
