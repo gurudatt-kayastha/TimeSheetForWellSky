@@ -1,0 +1,33 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: #fff;
+  padding: 18px;
+  border-radius: 8px;
+  min-width: 420px;
+  max-width: 90%;
+}
+
+textarea {
+  width: 100%;
+  padding: 8px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.small {
+  font-size: 12px;
+  color: #666;
+}
