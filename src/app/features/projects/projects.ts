@@ -35,6 +35,7 @@ export class Projects implements OnInit {
 
   // New property to check if the user is an admin
   isAdmin: boolean = false;
+  totaltime: any;
 
   constructor(
     private projectService: ProjectService,
@@ -65,44 +66,51 @@ export class Projects implements OnInit {
     this.loadProjects();
     this.initAdminFlag(); // Added for admin functionality
   }
+loadProjects(): void {
+  this.loading = true;
+  this.projectService.getProjectsForUser(this.currentUser).subscribe({
+    next: (projects) => {
+      let hourRequests: Observable<number>[];
 
-  loadProjects(): void {
-    this.loading = true;
-    this.projectService.getProjectsForUser(this.currentUser).subscribe({
-      next: (projects) => {
-        const hourRequests = projects.map(project => 
+      if (this.isAdmin) {
+        hourRequests = projects.map(project =>
+          this.timesheetService.getTotalHoursByProjectForAdmin(project.name, this.currentUser)
+        );
+      } else {
+        hourRequests = projects.map(project =>
           this.timesheetService.getTotalHoursByProjectForUser(project.name, this.currentUser)
         );
+      }
 
-        if (hourRequests.length > 0) {
-          forkJoin(hourRequests).subscribe({
-            next: (hoursArray) => {
-              this.projects = projects.map((project, index) => ({
-                ...project,
-                totalHours: hoursArray[index]
-              }));
-              this.loading = false;
-            },
-            error: (error) => {
-              console.error('Error loading project hours:', error);
-              this.projects = projects.map(project => ({
-                ...project,
-                totalHours: 0
-              }));
-              this.loading = false;
-            }
-          });
-        } else {
-          this.projects = [];
-          this.loading = false;
-        }
-      },
-      error: (error) => {
-        console.error('Error loading projects:', error);
+      if (hourRequests.length > 0) {
+        forkJoin<number[]>(hourRequests).subscribe({
+          next: (hoursArray) => {
+            this.projects = projects.map((project, index) => ({
+              ...project,
+              totalHours: hoursArray[index]
+            }));
+            this.loading = false;
+          },
+          error: (error) => {
+            console.error('Error loading project hours:', error);
+            this.projects = projects.map(project => ({
+              ...project,
+              totalHours: 0
+            }));
+            this.loading = false;
+          }
+        });
+      } else {
+        this.projects = [];
         this.loading = false;
       }
-    });
-  }
+    },
+    error: (error) => {
+      console.error('Error loading projects:', error);
+      this.loading = false;
+    }
+  });
+}
 
   loadAvailableUsers() {
     // Example - replace with your actual user service call
