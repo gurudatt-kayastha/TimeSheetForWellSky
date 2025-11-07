@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { filter } from 'rxjs/operators';
 import { TimesheetService, Timesheet } from '../../shared/services/timesheet';
 import { ProjectService, Project } from '../../shared/services/project';
@@ -12,10 +12,16 @@ import { CustomAlertComponent, AlertConfig } from '../../shared/components/custo
 
 @Component({
   selector: 'app-project-timesheet',
-  imports: [CommonModule, FormsModule, HttpClientModule, CustomAlertComponent],
+  standalone: true, // make standalone so we can list imports
+  imports: [
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    CustomAlertComponent,
+    ToastrModule
+  ],
   templateUrl: './project-timesheet.html',
-  styleUrl: './project-timesheet.scss',
-  providers: [TimesheetService, ProjectService, LoginService]
+  styleUrls: ['./project-timesheet.scss']
 })
 export class ProjectTimesheet implements OnInit {
   @ViewChild(CustomAlertComponent) customAlert!: CustomAlertComponent;
