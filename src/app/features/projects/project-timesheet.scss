@@ -507,6 +507,103 @@
   font-size: 12px;
 }
 
+// Dialog Styles (copied from projects.scss)
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog-content {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  width: 500px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h2, h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+    color: #666;
+    
+    &:hover {
+      color: #000;
+    }
+  }
+}
+
+.delete-dialog {
+  max-width: 400px;
+  text-align: center;
+
+  p {
+    margin: 16px 0;
+    color: #666;
+  }
+
+  .btn-danger {
+    background: #dc3545;
+    color: white;
+    
+    &:hover {
+      background: #c82333;
+    }
+  }
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+
+  .btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    
+    &.btn-secondary {
+      background: #e0e0e0;
+      color: #333;
+      &:hover { background: #d5d5d5; }
+    }
+    
+    &.btn-danger {
+      background: #dc3545;
+      color: white;
+      &:hover { background: #c82333; }
+    }
+  }
+}
+
 // Responsive design
 @media (max-width: 1200px) {
   .timesheet-table {

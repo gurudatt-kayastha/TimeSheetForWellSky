@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -8,18 +8,15 @@ import { filter } from 'rxjs/operators';
 import { TimesheetService, Timesheet } from '../../shared/services/timesheet';
 import { ProjectService, Project } from '../../shared/services/project';
 import { LoginService } from '../../shared/services/login';
-import { CustomAlertComponent, AlertConfig } from '../../shared/components/custom-alert/custom-alert.component';
 
 @Component({
   selector: 'app-project-timesheet',
-  imports: [CommonModule, FormsModule, HttpClientModule, CustomAlertComponent],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './project-timesheet.html',
   styleUrl: './project-timesheet.scss',
   providers: [TimesheetService, ProjectService, LoginService]
 })
 export class ProjectTimesheet implements OnInit {
-  @ViewChild(CustomAlertComponent) customAlert!: CustomAlertComponent;
-
   timesheets: Timesheet[] = [];
   filteredTimesheets: Timesheet[] = [];
   totalHours: number = 0;
@@ -41,13 +38,10 @@ export class ProjectTimesheet implements OnInit {
   selectedTimesheets: Set<string> = new Set();
   selectAll: boolean = false;
 
-  // Alert configuration
-  alertConfig: AlertConfig = {
-    title: '',
-    message: '',
-    type: 'info',
-    showCancel: false
-  };
+  // Delete dialog properties
+  showDeleteDialog = false;
+  timesheetToDelete: Timesheet | null = null;
+  showBulkDeleteDialog = false;
 
   constructor(
     private timesheetService: TimesheetService,
@@ -99,7 +93,7 @@ export class ProjectTimesheet implements OnInit {
           timesheet.user === this.currentUser
         );
         this.filteredTimesheets = [...this.timesheets];
-        this.applyFilters(); // Reapply existing filters
+        this.applyFilters();
         this.calculateTotalHours();
         this.loadProjectTotalHours();
         this.loading = false;
@@ -273,54 +267,48 @@ export class ProjectTimesheet implements OnInit {
     );
 
     if (approvedTimesheets.length > 0) {
-      this.showAlert({
-        title: 'Cannot Delete',
-        message: `Cannot delete ${approvedTimesheets.length} approved timesheet entries. Only pending entries can be deleted.`,
-        type: 'warning',
-        confirmText: 'OK',
-        showCancel: false
-      });
+      this.toastr.warning(
+        `Cannot delete ${approvedTimesheets.length} approved timesheet entries. Only pending entries can be deleted.`,
+        'Cannot Delete',
+        { timeOut: 4000 }
+      );
       return;
     }
 
-    const count = this.selectedTimesheets.size;
-    const message = count === 1 
-      ? 'Are you sure you want to delete this timesheet entry?' 
-      : `Are you sure you want to delete ${count} timesheet entries?`;
-    
-    this.showConfirmAndExecute(
-      'Confirm Deletion',
-      message,
-      async () => {
-        const deletePromises = Array.from(this.selectedTimesheets).map(id =>
-          this.timesheetService.deleteTimesheet(id).toPromise()
-        );
+    this.showBulkDeleteDialog = true;
+  }
 
-        try {
-          await Promise.all(deletePromises);
-          
-          this.clearSelections();
+  cancelBulkDelete(): void {
+    this.showBulkDeleteDialog = false;
+  }
 
-          // Use toastr instead of alert
-          const successMessage = `Successfully deleted ${count} timesheet ${count === 1 ? 'entry' : 'entries'}`;
-          this.toastr.success(successMessage, 'Success', {
-            timeOut: 3000,
-            progressBar: true,
-            closeButton: true
-          });
-
-          // Reload timesheets from backend
-          this.loadTimesheets();
-        } catch (error) {
-          console.error('Error deleting timesheets:', error);
-          this.toastr.error('Failed to delete timesheet entries. Please try again.', 'Error', {
-            timeOut: 3000,
-            progressBar: true,
-            closeButton: true
-          });
-        }
-      }
+  async deleteBulkTimesheets(): Promise<void> {
+    const deletePromises = Array.from(this.selectedTimesheets).map(id =>
+      this.timesheetService.deleteTimesheet(id).toPromise()
     );
+
+    try {
+      await Promise.all(deletePromises);
+      
+      const count = this.selectedTimesheets.size;
+      this.clearSelections();
+      this.showBulkDeleteDialog = false;
+
+      this.toastr.success(
+        `Successfully deleted ${count} timesheet ${count === 1 ? 'entry' : 'entries'}`,
+        'Success',
+        { timeOut: 3000, progressBar: true }
+      );
+
+      this.loadTimesheets();
+    } catch (error) {
+      console.error('Error deleting timesheets:', error);
+      this.showBulkDeleteDialog = false;
+      this.toastr.error('Failed to delete timesheet entries. Please try again.', 'Error', {
+        timeOut: 3000,
+        progressBar: true
+      });
+    }
   }
 
   onLogTime(): void {
@@ -336,112 +324,52 @@ export class ProjectTimesheet implements OnInit {
     ]);
   }
 
-  onDeleteTimesheet(timesheet: Timesheet): void {
+  confirmDeleteTimesheet(timesheet: Timesheet): void {
     if (timesheet.approvalStatus.toLowerCase() === 'approved') {
-      this.showAlert({
-        title: 'Cannot Delete',
-        message: 'Cannot delete an approved timesheet entry. Only pending entries can be deleted.',
-        type: 'warning',
-        confirmText: 'OK',
-        showCancel: false
-      });
+      this.toastr.warning(
+        'Cannot delete an approved timesheet entry. Only pending entries can be deleted.',
+        'Cannot Delete',
+        { timeOut: 4000 }
+      );
       return;
     }
 
-    this.showConfirmAndExecute(
-      'Delete Timesheet',
-      `Are you sure you want to delete this timesheet entry from ${timesheet.date}?`,
-      () => {
-        this.timesheetService.deleteTimesheet(timesheet.id).subscribe({
-          next: () => {
-            // Use toastr instead of alert
-            this.toastr.success('Timesheet entry deleted successfully', 'Success', {
-              timeOut: 3000,
-              progressBar: true,
-              closeButton: true
-            });
+    this.timesheetToDelete = timesheet;
+    this.showDeleteDialog = true;
+  }
 
-            // Reload timesheets from backend
-            this.loadTimesheets();
-          },
-          error: (error) => {
-            console.error('Error deleting timesheet:', error);
-            this.toastr.error('Error deleting timesheet entry. Please try again.', 'Error', {
-              timeOut: 3000,
-              progressBar: true,
-              closeButton: true
-            });
-          }
+  cancelDelete(): void {
+    this.timesheetToDelete = null;
+    this.showDeleteDialog = false;
+  }
+
+  deleteTimesheet(): void {
+    if (!this.timesheetToDelete) {
+      return;
+    }
+
+    this.timesheetService.deleteTimesheet(this.timesheetToDelete.id).subscribe({
+      next: () => {
+        this.toastr.success('Timesheet entry deleted successfully', 'Success', {
+          timeOut: 3000,
+          progressBar: true
+        });
+
+        this.cancelDelete();
+        this.loadTimesheets();
+      },
+      error: (error) => {
+        console.error('Error deleting timesheet:', error);
+        this.cancelDelete();
+        this.toastr.error('Error deleting timesheet entry. Please try again.', 'Error', {
+          timeOut: 3000,
+          progressBar: true
         });
       }
-    );
+    });
   }
 
   goBackToProjects(): void {
     this.router.navigate(['/projects']);
-  }
-
-  // Alert helper methods
-  showAlert(config: AlertConfig): void {
-    this.alertConfig = config;
-    setTimeout(() => {
-      this.customAlert.show();
-    });
-  }
-
-  showConfirmAndExecute(title: string, message: string, onConfirm: () => void): void {
-    this.alertConfig = {
-      title,
-      message,
-      type: 'confirm',
-      confirmText: 'Yes',
-      cancelText: 'No',
-      showCancel: true
-    };
-    
-    setTimeout(() => {
-      this.customAlert.show();
-    });
-
-    // Create new subscriptions for each confirmation
-    const confirmSub = this.customAlert.confirm.pipe().subscribe(() => {
-      onConfirm();
-      confirmSub.unsubscribe();
-      cancelSub.unsubscribe();
-    });
-
-    const cancelSub = this.customAlert.cancel.pipe().subscribe(() => {
-      confirmSub.unsubscribe();
-      cancelSub.unsubscribe();
-    });
-  }
-
-  async showConfirm(title: string, message: string): Promise<boolean> {
-    return new Promise((resolve) => {
-      this.alertConfig = {
-        title,
-        message,
-        type: 'confirm',
-        confirmText: 'Yes',
-        cancelText: 'No',
-        showCancel: true
-      };
-      
-      setTimeout(() => {
-        this.customAlert.show();
-      });
-
-      const confirmSub = this.customAlert.confirm.subscribe(() => {
-        resolve(true);
-        confirmSub.unsubscribe();
-        cancelSub.unsubscribe();
-      });
-
-      const cancelSub = this.customAlert.cancel.subscribe(() => {
-        resolve(false);
-        confirmSub.unsubscribe();
-        cancelSub.unsubscribe();
-      });
-    });
   }
 }

@@ -1,9 +1,4 @@
 <div class="project-timesheet-container">
-  <!-- Custom Alert Component -->
-  <!-- Custom Alert Component -->
-<app-custom-alert [config]="alertConfig"></app-custom-alert>
-
-
   <!-- Breadcrumb and Back Navigation -->
   <div class="breadcrumb-section">
     <button class="btn-back" (click)="goBackToProjects()">
@@ -180,7 +175,7 @@
               <td class="author-column">{{ timesheet.author }}</td>
               <td class="actions-column">
                 <button class="btn-edit" title="Edit timesheet entry" (click)="onEditTimesheet(timesheet)">✏️</button>
-                <button class="btn-delete" title="Delete timesheet entry" (click)="onDeleteTimesheet(timesheet)">🗑️</button>
+                <button class="btn-delete" title="Delete timesheet entry" (click)="confirmDeleteTimesheet(timesheet)">🗑️</button>
               </td>
             </tr>
           }
@@ -205,6 +200,44 @@
       <button class="btn-log-time" (click)="onLogTime()">
         <i class="icon-clock"></i> Log your first entry
       </button>
+    </div>
+  }
+
+  <!-- Delete Single Timesheet Confirmation Dialog -->
+  @if (showDeleteDialog) {
+    <div class="dialog-overlay">
+      <div class="dialog-content delete-dialog">
+        <div class="dialog-header">
+          <h3>Delete Timesheet Entry</h3>
+          <button type="button" class="close-button" (click)="cancelDelete()">×</button>
+        </div>
+
+        <p>Are you sure you want to delete this timesheet entry from <strong>{{ timesheetToDelete?.date }}</strong>?</p>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+          <button type="button" class="btn btn-danger" (click)="deleteTimesheet()">Delete</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Delete Bulk Timesheets Confirmation Dialog -->
+  @if (showBulkDeleteDialog) {
+    <div class="dialog-overlay">
+      <div class="dialog-content delete-dialog">
+        <div class="dialog-header">
+          <h3>Delete Timesheet Entries</h3>
+          <button type="button" class="close-button" (click)="cancelBulkDelete()">×</button>
+        </div>
+
+        <p>Are you sure you want to delete <strong>{{ getSelectedCount() }}</strong> timesheet {{ getSelectedCount() === 1 ? 'entry' : 'entries' }}?</p>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-secondary" (click)="cancelBulkDelete()">Cancel</button>
+          <button type="button" class="btn btn-danger" (click)="deleteBulkTimesheets()">Delete</button>
+        </div>
+      </div>
     </div>
   }
 </div>
